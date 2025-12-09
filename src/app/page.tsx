@@ -1,7 +1,8 @@
 "use client"
 
 import Image from "next/image";
-import { Star, MapPin, Phone, Mail } from "lucide-react";
+import Link from "next/link";
+import { Car, MapPin, Mail, Phone, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -19,28 +20,22 @@ export default function Home() {
 
   const reviews = [
     {
-      name: "Sarah Johnson",
+      name: "Ratish S",
       rating: 5,
-      comment: "Absolutely stunning hotel with impeccable service. The attention to detail is extraordinary.",
-      date: "December 2024"
+      comment: "Love the non-veg meals here. The Rs. 200/- meal is a wholesome package with fish curry, chicken fry, kakka irachi and more.",
+      date: "Google Maps"
     },
     {
-      name: "Michael Chen",
+      name: "satheesh sr",
       rating: 5,
-      comment: "A truly luxurious experience. The rooms are elegant and the staff went above and beyond.",
-      date: "November 2024"
+      comment: "Stayed more than 15 times; best budget friendly rooms with a restaurant and bar close to the bus stand and railway station.",
+      date: "Google Maps"
     },
     {
-      name: "Emma Williams",
+      name: "Minu Menon",
       rating: 5,
-      comment: "The perfect blend of sophistication and comfort. Will definitely be returning.",
-      date: "November 2024"
-    },
-    {
-      name: "James Rodriguez",
-      rating: 5,
-      comment: "Exceptional hospitality in a beautiful setting. Every moment was memorable.",
-      date: "October 2024"
+      comment: "Nice place, enough seating, good staff n good food... Arcadia... 👍",
+      date: "Google Maps"
     }
   ];
 
@@ -73,16 +68,44 @@ export default function Home() {
           <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light text-foreground mb-6 tracking-wide">
             Arcalia Hotel
           </h1>
+          <p className="text-lg md:text-xl text-primary font-medium mb-4 tracking-wide">
+            Tast Food, Safety Stay
+          </p>
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 font-light tracking-wide">
             Where Elegance Meets Tranquility
           </p>
-          <Button 
-            size="lg" 
-            onClick={() => scrollToSection("contact")}
-            className="px-8 py-6 text-lg font-light tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            Contact Us
-          </Button>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+            <Button 
+              size="lg" 
+              onClick={() => scrollToSection("contact")}
+              className="px-8 py-6 text-lg font-light tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground"
+            >
+              Contact Us
+            </Button>
+            <Button size="lg" variant="outline" asChild className="px-8 py-6 text-lg font-light tracking-wider">
+              <a href="http://zoma.to/r/20041234" target="_blank" rel="noreferrer">
+                Order on Zomato
+              </a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Nav Section */}
+      <section className="py-16 px-4 bg-secondary/20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link href="/restaurant" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Restaurant</h3>
+            <p className="text-muted-foreground font-light">Experience regional specialties and hearty meals—including dedicated parking for dine-in guests.</p>
+          </Link>
+          <Link href="/hall" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Hall</h3>
+            <p className="text-muted-foreground font-light">Book our AC hall for meetings or celebrations with easy access and on-site parking.</p>
+          </Link>
+          <Link href="/order" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Order</h3>
+            <p className="text-muted-foreground font-light">Order your favorites online—redirects to our Zomato page for delivery or pickup.</p>
+          </Link>
         </div>
       </section>
 
@@ -162,16 +185,19 @@ export default function Home() {
             <h2 className="text-5xl font-serif font-light text-foreground mb-4">Guest Testimonials</h2>
             <p className="text-lg text-muted-foreground font-light">Cherished moments from our valued guests</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {reviews.map((review, index) => (
-              <Card key={index} className="p-8 bg-white border-none shadow-sm hover:shadow-md transition-shadow">
+              <Card
+                key={index}
+                className="flex h-full flex-col p-8 bg-white border-none shadow-sm hover:shadow-md transition-shadow"
+              >
                 <div className="flex gap-1 mb-4">
                   {[...Array(review.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
                 <p className="text-foreground mb-6 font-light leading-relaxed">"{review.comment}"</p>
-                <div className="border-t border-border pt-4">
+                <div className="border-t border-border pt-4 mt-auto">
                   <p className="font-medium text-foreground">{review.name}</p>
                   <p className="text-sm text-muted-foreground font-light">{review.date}</p>
                 </div>
@@ -187,7 +213,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
             <h2 className="text-5xl font-serif font-light text-foreground mb-4">Find Us</h2>
-            <p className="text-lg text-muted-foreground font-light">Located in Changanassery, Kerala</p>
+            <p className="text-lg text-muted-foreground font-light">Located in Changanassery, Kerala — with dedicated parking space for guests and diners</p>
           </div>
           <div 
             className="relative h-96 bg-muted cursor-pointer group overflow-hidden"
@@ -218,13 +244,17 @@ export default function Home() {
               <p className="font-light opacity-90 leading-relaxed">
                 Experience unparalleled luxury and sophistication in the heart of Changanassery.
               </p>
+              <div className="mt-4 flex items-center gap-2 text-sm opacity-90">
+                <Car className="w-4 h-4" />
+                <span>Dedicated parking space for guests and restaurant visitors.</span>
+              </div>
             </div>
             <div>
               <h4 className="text-lg font-medium mb-6 tracking-wide">Contact</h4>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5" />
-                  <span className="font-light">0481 242 3027</span>
+                  <span className="font-light">04812423027</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5" />
@@ -246,7 +276,10 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-primary-foreground/20 pt-8 text-center">
-            <p className="font-light opacity-80">© 2024 Arcalia Hotel. All rights reserved.</p>
+            <p className="font-light opacity-80">© 2025 Arcalia Hotel. All rights reserved.</p>
+            <p className="mt-2 text-sm opacity-80">
+              Site crafted by <a href="https://www.noxusdynamics.tech/" target="_blank" rel="noreferrer" className="underline font-medium">Noxus Dynamics</a>.
+            </p>
           </div>
         </div>
       </footer>

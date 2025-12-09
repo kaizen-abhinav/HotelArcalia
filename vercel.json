@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
-  "installCommand": "npm ci",
+  "installCommand": "npm ci --legacy-peer-deps",
   "devCommand": "npm run dev",
   "github": {
     "enabled": true,

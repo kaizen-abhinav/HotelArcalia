@@ -51,7 +51,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center bg-white">
+      <section className="relative min-h-[80vh] md:h-screen flex items-center justify-center bg-white pt-16 md:pt-0">
         <div className="absolute inset-0 z-0">
           <Image
             src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1764785028701.png?width=8000&height=8000&resize=contain"
@@ -65,24 +65,24 @@ export default function Home() {
           <div className="mb-6">
             <div className="inline-block w-16 h-0.5 bg-primary mb-8"></div>
           </div>
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-serif font-light text-foreground mb-6 tracking-wide">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-serif font-light text-foreground mb-6 tracking-wide leading-tight">
             Arcalia Hotel
           </h1>
-          <p className="text-lg md:text-xl text-primary font-medium mb-4 tracking-wide">
+          <p className="text-base sm:text-lg md:text-xl text-primary font-medium mb-4 tracking-wide">
             Tast Food, Safety Stay
           </p>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-12 font-light tracking-wide">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-10 md:mb-12 font-light tracking-wide">
             Where Elegance Meets Tranquility
           </p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
             <Button 
               size="lg" 
               onClick={() => scrollToSection("contact")}
-              className="px-8 py-6 text-lg font-light tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="px-7 py-5 text-base sm:text-lg font-light tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               Contact Us
             </Button>
-            <Button size="lg" variant="outline" asChild className="px-8 py-6 text-lg font-light tracking-wider">
+            <Button size="lg" variant="outline" asChild className="px-7 py-5 text-base sm:text-lg font-light tracking-wider">
               <a href="http://zoma.to/r/20041234" target="_blank" rel="noreferrer">
                 Order on Zomato
               </a>
@@ -92,34 +92,34 @@ export default function Home() {
       </section>
 
       {/* Quick Nav Section */}
-      <section className="py-16 px-4 bg-secondary/20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Link href="/restaurant" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Restaurant</h3>
-            <p className="text-muted-foreground font-light">Experience regional specialties and hearty meals—including dedicated parking for dine-in guests.</p>
+      <section className="py-14 px-4 bg-secondary/20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+          <Link href="/restaurant" className="group block rounded-sm border border-border bg-white p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-xl sm:text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Restaurant</h3>
+            <p className="text-muted-foreground font-light text-sm sm:text-base">Experience regional specialties and hearty meals—including dedicated parking for dine-in guests.</p>
           </Link>
-          <Link href="/hall" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Hall</h3>
-            <p className="text-muted-foreground font-light">Book our AC hall for meetings or celebrations with easy access and on-site parking.</p>
+          <Link href="/hall" className="group block rounded-sm border border-border bg-white p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-xl sm:text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Hall</h3>
+            <p className="text-muted-foreground font-light text-sm sm:text-base">Book our AC hall for meetings or celebrations with easy access and on-site parking.</p>
           </Link>
-          <Link href="/order" className="group block rounded-sm border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
-            <h3 className="text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Order</h3>
-            <p className="text-muted-foreground font-light">Order your favorites online—redirects to our Zomato page for delivery or pickup.</p>
+          <Link href="/order" className="group block rounded-sm border border-border bg-white p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
+            <h3 className="text-xl sm:text-2xl font-serif font-light mb-3 group-hover:text-primary transition-colors">Order</h3>
+            <p className="text-muted-foreground font-light text-sm sm:text-base">Order your favorites online—redirects to our Zomato page for delivery or pickup.</p>
           </Link>
         </div>
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-24 px-4 bg-white">
+      <section id="gallery" className="py-16 md:py-24 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 className="text-5xl font-serif font-light text-foreground mb-4">Our Sanctuary</h2>
-            <p className="text-lg text-muted-foreground font-light">Experience refined luxury in every corner</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Our Sanctuary</h2>
+            <p className="text-base sm:text-lg text-muted-foreground font-light">Experience refined luxury in every corner</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
             {galleryImages.map((image, index) => (
-              <div key={index} className="relative h-80 overflow-hidden group">
+              <div key={index} className="relative h-64 sm:h-72 md:h-80 overflow-hidden rounded-sm group">
                 <Image
                   src={image}
                   alt={`Hotel view ${index + 1}`}
@@ -133,15 +133,15 @@ export default function Home() {
       </section>
 
       {/* Menu Section */}
-      <section id="menu" className="py-24 px-4 bg-secondary/30">
+      <section id="menu" className="py-16 md:py-24 px-4 bg-secondary/30">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 className="text-5xl font-serif font-light text-foreground mb-4">Culinary Delights</h2>
-            <p className="text-lg text-muted-foreground font-light">Savor the finest flavors from our kitchen</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Culinary Delights</h2>
+            <p className="text-base sm:text-lg text-muted-foreground font-light">Savor the finest flavors from our kitchen</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative h-96 overflow-hidden group bg-white shadow-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <div className="relative h-64 sm:h-72 md:h-96 overflow-hidden group bg-white shadow-sm rounded-sm">
               <Image
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1764788887863.png?width=8000&height=8000&resize=contain"
                 alt="Special Biryani"
@@ -149,7 +149,7 @@ export default function Home() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="relative h-96 overflow-hidden group bg-white shadow-sm">
+            <div className="relative h-64 sm:h-72 md:h-96 overflow-hidden group bg-white shadow-sm rounded-sm">
               <Image
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1764788898202.png?width=8000&height=8000&resize=contain"
                 alt="Grilled Specialties"
@@ -157,7 +157,7 @@ export default function Home() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="relative h-96 overflow-hidden group bg-white shadow-sm">
+            <div className="relative h-64 sm:h-72 md:h-96 overflow-hidden group bg-white shadow-sm rounded-sm">
               <Image
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1764788906015.png?width=8000&height=8000&resize=contain"
                 alt="Traditional Curry"
@@ -165,7 +165,7 @@ export default function Home() {
                 className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             </div>
-            <div className="relative h-96 overflow-hidden group bg-white shadow-sm">
+            <div className="relative h-64 sm:h-72 md:h-96 overflow-hidden group bg-white shadow-sm rounded-sm">
               <Image
                 src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/render/image/public/document-uploads/image-1764788933393.png?width=8000&height=8000&resize=contain"
                 alt="Signature Rice Dish"
@@ -178,25 +178,25 @@ export default function Home() {
       </section>
 
       {/* Reviews Section */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-16 md:py-24 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 className="text-5xl font-serif font-light text-foreground mb-4">Guest Testimonials</h2>
-            <p className="text-lg text-muted-foreground font-light">Cherished moments from our valued guests</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Guest Testimonials</h2>
+            <p className="text-base sm:text-lg text-muted-foreground font-light">Cherished moments from our valued guests</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {reviews.map((review, index) => (
               <Card
                 key={index}
-                className="flex h-full flex-col p-8 bg-white border-none shadow-sm hover:shadow-md transition-shadow"
+                className="flex h-full flex-col p-6 md:p-8 bg-white border-none shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(review.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-primary text-primary" />
                   ))}
                 </div>
-                <p className="text-foreground mb-6 font-light leading-relaxed">"{review.comment}"</p>
+                <p className="text-foreground mb-6 font-light leading-relaxed text-sm sm:text-base">"{review.comment}"</p>
                 <div className="border-t border-border pt-4 mt-auto">
                   <p className="font-medium text-foreground">{review.name}</p>
                   <p className="text-sm text-muted-foreground font-light">{review.date}</p>
@@ -208,15 +208,15 @@ export default function Home() {
       </section>
 
       {/* Map Section */}
-      <section className="py-24 px-4 bg-white">
+      <section className="py-16 md:py-24 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 className="text-5xl font-serif font-light text-foreground mb-4">Find Us</h2>
-            <p className="text-lg text-muted-foreground font-light">Located in Changanassery, Kerala — with dedicated parking space for guests and diners</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Find Us</h2>
+            <p className="text-base sm:text-lg text-muted-foreground font-light">Located in Changanassery, Kerala — with dedicated parking space for guests and diners</p>
           </div>
           <div 
-            className="relative h-96 bg-muted cursor-pointer group overflow-hidden"
+            className="relative h-72 sm:h-80 md:h-96 bg-muted cursor-pointer group overflow-hidden rounded-sm"
             onClick={handleMapClick}
           >
             <Image
@@ -236,11 +236,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-primary text-primary-foreground py-16 px-4">
+      <footer id="contact" className="bg-primary text-primary-foreground py-14 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10 md:mb-12">
             <div>
-              <h3 className="text-3xl font-serif font-light mb-6">Arcalia Hotel</h3>
+              <h3 className="text-2xl md:text-3xl font-serif font-light mb-4 md:mb-6">Arcalia Hotel</h3>
               <p className="font-light opacity-90 leading-relaxed">
                 Experience unparalleled luxury and sophistication in the heart of Changanassery.
               </p>

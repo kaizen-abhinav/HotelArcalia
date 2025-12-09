@@ -5,6 +5,8 @@ import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
 import ErrorReporter from "@/components/ErrorReporter";
 import Script from "next/script";
 
+const siteUrl = "https://arcaliahotel.com";
+
 export const metadata: Metadata = {
   title: "Arcalia Hotel | Tast Food, Safety Stay",
   description: "Experience Arcalia Hotel in Changanassery with dedicated parking, great food, and warm hospitality.",
@@ -18,11 +20,16 @@ export const metadata: Metadata = {
     "hall changanassery",
     "kerala hotel arcalia",
   ],
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: "Arcalia Hotel | Tast Food, Safety Stay",
     description: "Stay and dine at Arcalia Hotel in Changanassery with dedicated parking, great food, and warm hospitality.",
     type: "website",
     siteName: "Arcalia Hotel",
+    url: siteUrl,
   },
   twitter: {
     card: "summary_large_image",

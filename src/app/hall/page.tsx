@@ -1,83 +1,159 @@
 import Image from "next/image";
-import { CalendarRange, Car, Phone } from "lucide-react";
+import { CalendarRange, Car, Phone, Users, Music, Utensils, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 const amenities = [
-  "AC hall with flexible seating",
-  "Dedicated parking for guests",
-  "Catering from Arcalia Restaurant",
-  "Stage, audio, and projector support",
+  { icon: Users, title: "Flexible Seating", desc: "30-80 guests capacity" },
+  { icon: Car, title: "Free Parking", desc: "Dedicated parking for guests" },
+  { icon: Utensils, title: "In-house Catering", desc: "From Arcalia Restaurant" },
+  { icon: Music, title: "A/V Equipment", desc: "Stage, audio & projector" },
+];
+
+const features = [
+  "Air-conditioned comfortable hall",
+  "Customizable seating arrangements",
+  "Professional catering services",
+  "Audio-visual equipment included",
+  "Dedicated parking space",
+  "Convenient location near KSRTC",
+  "Affordable pricing",
+  "Clean and well-maintained",
+];
+
+const eventTypes = [
+  "Birthday Parties",
+  "Family Gatherings",
+  "Corporate Meetings",
+  "Training Sessions",
+  "Small Receptions",
+  "Engagements",
+  "Get-togethers",
+  "Workshops",
 ];
 
 export default function HallPage() {
   return (
     <div className="min-h-screen bg-white">
-      <section className="py-14 md:py-20 px-4 bg-secondary/20">
+      {/* Hero Section */}
+      <section className="py-12 md:py-20 px-4 bg-secondary/20">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 items-center">
           <div className="order-2 lg:order-1 text-center lg:text-left">
-            <p className="text-sm uppercase tracking-[0.3em] text-primary mb-4">Hall</p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-light mb-5 md:mb-6">Book our hall for meetings and celebrations</h1>
-            <p className="text-base sm:text-lg text-muted-foreground font-light leading-relaxed mb-7 md:mb-8">
-              A comfortable, air-conditioned hall suited for family gatherings, small receptions, trainings, and off-sites—steps away from the KSRTC stand with on-site parking.
+            <p className="text-sm uppercase tracking-[0.3em] text-primary mb-3 md:mb-4">Event Hall</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-light mb-4 md:mb-6">AC Hall for Events & Celebrations in Changanassery</h1>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground font-light leading-relaxed mb-6 md:mb-8">
+              A comfortable, air-conditioned hall perfect for family gatherings, small receptions, trainings, and corporate events—steps away from KSRTC with free parking.
             </p>
-            <div className="flex flex-wrap justify-center lg:justify-start gap-3 md:gap-4">
-              <Button asChild size="lg">
-                <a href="tel:04812423027" className="inline-flex items-center gap-2">
+            <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3">
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <a href="tel:04812423027" className="inline-flex items-center justify-center gap-2">
                   <Phone className="w-4 h-4" />
-                  Call to reserve
+                  Call to Reserve
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline">
-                <a href="mailto:info@arcaliahotel.com">Email booking request</a>
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                <a href="mailto:info@arcaliahotel.com">Email Booking Request</a>
               </Button>
             </div>
           </div>
-          <div className="order-1 lg:order-2 relative h-56 sm:h-64 md:h-[320px] lg:h-[420px] rounded-sm overflow-hidden shadow-sm bg-white">
+          <div className="order-1 lg:order-2 relative h-56 sm:h-64 md:h-[320px] lg:h-[420px] rounded-lg overflow-hidden shadow-lg bg-muted">
             <Image
-              src="https://images.jdmagicbox.com/comp/kottayam/y4/9999px481.x481.110729114809.b7y4/catalogue/hotel-arcadia-changanacherry-kottayam-restaurants-dg5wg-250.jpg"
-              alt="Hall setup"
+              src="/gallery/gallery-5.jpeg"
+              alt="Arcalia Hotel AC event hall in Changanassery - perfect for meetings and celebrations"
               fill
               className="object-cover"
               sizes="(min-width: 1024px) 45vw, 100vw"
               priority
+              quality={90}
             />
           </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16 px-4 bg-white">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 items-start">
-          <Card className="p-5 md:p-6 border-border shadow-sm">
-            <h3 className="text-2xl font-serif font-light mb-3 flex items-center gap-2">
-              <CalendarRange className="w-5 h-5" />
-              Ready for your next event
-            </h3>
-            <p className="text-muted-foreground font-light leading-relaxed">
-              Flexible layouts for 30–80 guests, in-house catering, and support for A/V so you can focus on the gathering.
-            </p>
-          </Card>
-          <Card className="p-5 md:p-6 border-border shadow-sm">
-            <h3 className="text-2xl font-serif font-light mb-3 flex items-center gap-2">
-              <Car className="w-5 h-5" />
-              Easy access with parking
-            </h3>
-            <p className="text-muted-foreground font-light leading-relaxed">
-              Located near KSRTC South Exit Road with a dedicated parking space for hall guests, making arrivals simple.
-            </p>
-          </Card>
+      {/* Amenities Grid */}
+      <section className="py-10 md:py-16 px-4 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-light mb-6 md:mb-8 text-center">Hall Amenities</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {amenities.map((item) => (
+              <Card key={item.title} className="p-4 md:p-6 text-center border-border shadow-sm hover:shadow-md transition-shadow">
+                <item.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                <h3 className="font-medium text-foreground text-sm sm:text-base mb-1">{item.title}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">{item.desc}</p>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="py-12 md:py-16 px-4 bg-secondary/20">
+      {/* Features & Event Types */}
+      <section className="py-10 md:py-16 px-4 bg-secondary/10">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-serif font-light mb-4 md:mb-6 flex items-center gap-2">
+              <CalendarRange className="w-5 h-5 text-primary" />
+              What&apos;s Included
+            </h2>
+            <div className="grid grid-cols-1 gap-2">
+              {features.map((feature) => (
+                <div key={feature} className="flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-foreground">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 className="text-xl sm:text-2xl font-serif font-light mb-4 md:mb-6">Perfect For</h2>
+            <div className="flex flex-wrap gap-2">
+              {eventTypes.map((event) => (
+                <span key={event} className="inline-block bg-white border border-border rounded-full px-3 py-1.5 text-xs sm:text-sm text-foreground shadow-sm">
+                  {event}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-10 md:py-16 px-4 bg-white">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light mb-5 md:mb-6 text-center">What&apos;s included</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-            {amenities.map((item) => (
-              <Card key={item} className="p-4 md:p-5 border-border bg-white/80">
-                <p className="font-light text-foreground text-sm sm:text-base">{item}</p>
-              </Card>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-light mb-6 md:mb-8 text-center">Hall Gallery</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+            {["/gallery/gallery-5.jpeg", "/gallery/gallery-6.jpeg", "/gallery/gallery-7.jpeg"].map((src, index) => (
+              <div key={index} className="relative h-40 sm:h-48 md:h-56 rounded-lg overflow-hidden bg-muted">
+                <Image
+                  src={src}
+                  alt={`Arcalia Hotel hall view ${index + 1}`}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-500"
+                  sizes="(min-width: 768px) 33vw, 50vw"
+                  quality={90}
+                />
+              </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-10 md:py-16 px-4 bg-primary text-primary-foreground">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-serif font-light mb-3 md:mb-4">Ready to Book Your Event?</h2>
+          <p className="text-sm sm:text-base font-light opacity-90 leading-relaxed mb-6 max-w-2xl mx-auto">
+            Contact us to check availability and discuss your requirements. We offer competitive pricing and can customize the setup for your event.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-3">
+            <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
+              <a href="tel:04812423027" className="inline-flex items-center justify-center gap-2">
+                <Phone className="w-4 h-4" />
+                Call 04812423027
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10">
+              <a href="mailto:info@arcaliahotel.com">Email Us</a>
+            </Button>
           </div>
         </div>
       </section>

@@ -367,23 +367,45 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ErrorReporter />
-        <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-border">
-          <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="text-lg font-semibold tracking-wide">Arcalia Hotel</div>
-              <span className="text-sm text-muted-foreground">Tast Food, Safety Stay</span>
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-3 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+              <div className="text-base sm:text-lg font-semibold tracking-wide whitespace-nowrap">Arcalia Hotel</div>
+              <span className="hidden sm:inline text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Tasty Food, Safe Stay</span>
             </Link>
-            <nav className="flex items-center gap-6 text-sm font-medium text-foreground">
+            {/* Mobile Menu Button */}
+            <input type="checkbox" id="mobile-menu" className="peer hidden" />
+            <label htmlFor="mobile-menu" className="md:hidden cursor-pointer p-2 -mr-2 hover:bg-muted rounded-md" aria-label="Toggle menu">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </label>
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-medium text-foreground">
               <Link href="/restaurant" className="hover:text-primary transition-colors">Restaurant</Link>
               <Link href="/hall" className="hover:text-primary transition-colors">Hall</Link>
               <Link href="/order" className="hover:text-primary transition-colors">Order</Link>
               <a
                 href="http://zoma.to/r/20041234"
                 target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center rounded-sm bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90 transition-colors"
+                rel="noreferrer noopener"
+                className="inline-flex items-center rounded-md bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90 transition-colors text-sm"
               >
                 Order Food
+              </a>
+            </nav>
+            {/* Mobile Navigation */}
+            <nav className="hidden peer-checked:flex flex-col absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg md:hidden z-50">
+              <Link href="/restaurant" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Restaurant</Link>
+              <Link href="/hall" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Hall</Link>
+              <Link href="/order" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Order</Link>
+              <a
+                href="http://zoma.to/r/20041234"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="mx-4 my-3 text-center rounded-md bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 transition-colors"
+              >
+                Order Food on Zomato
               </a>
             </nav>
           </div>

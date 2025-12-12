@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Car, MapPin, Mail, Phone, Star, Clock, Utensils, Users, CheckCircle, ExternalLink } from "lucide-react";
+import { Car, MapPin, Mail, Phone, Clock, Utensils, Users, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import ReviewSystem from "@/components/ReviewSystem";
 
 export default function Home() {
   const handleMapClick = () => {
@@ -17,27 +18,6 @@ export default function Home() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const reviews = [
-    {
-      name: "Ratish S",
-      rating: 5,
-      comment: "Love the non-veg meals here. The Rs. 200/- meal is a wholesome package with fish curry, chicken fry, kakka irachi and more.",
-      date: "Google Maps Review"
-    },
-    {
-      name: "Satheesh SR",
-      rating: 5,
-      comment: "Stayed more than 15 times; best budget friendly rooms with a restaurant and bar close to the bus stand and railway station.",
-      date: "Google Maps Review"
-    },
-    {
-      name: "Minu Menon",
-      rating: 5,
-      comment: "Nice place, enough seating, good staff and good food... Arcalia... 👍",
-      date: "Google Maps Review"
-    }
-  ];
 
   const galleryImages = [
     { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Changanassery exterior view - best budget hotel near KSRTC bus stand Kerala" },
@@ -300,51 +280,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reviews Section - H2 with social proof */}
-      <section className="py-16 md:py-24 px-4 bg-white" aria-labelledby="reviews-heading">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 id="reviews-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Guest Reviews & Testimonials</h2>
-            <p className="text-base sm:text-lg text-muted-foreground font-light">What our guests say about Arcalia Hotel Changanassery</p>
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="flex gap-0.5">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-primary text-primary" aria-hidden="true" />
-                ))}
-              </div>
-              <span className="text-foreground font-medium">4.5/5</span>
-              <span className="text-muted-foreground">based on 150+ reviews</span>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {reviews.map((review, index) => (
-              <Card
-                key={index}
-                className="flex h-full flex-col p-6 md:p-8 bg-white border-none shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="flex gap-1 mb-4" aria-label={`${review.rating} out of 5 stars`}>
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" aria-hidden="true" />
-                  ))}
-                </div>
-                <blockquote className="text-foreground mb-6 font-light leading-relaxed text-sm sm:text-base">"{review.comment}"</blockquote>
-                <div className="border-t border-border pt-4 mt-auto">
-                  <p className="font-medium text-foreground">{review.name}</p>
-                  <p className="text-sm text-muted-foreground font-light">{review.date}</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Button asChild variant="outline" size="lg">
-              <a href="https://maps.app.goo.gl/9YLm4PGhbAUAgAU26" target="_blank" rel="noreferrer noopener" aria-label="Read more reviews on Google Maps">
-                Read More Reviews on Google Maps
-              </a>
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Reviews Section - Interactive Review System */}
+      <ReviewSystem />
 
       {/* Location Section - H2 with local SEO keywords */}
       <section id="location" className="py-16 md:py-24 px-4 bg-secondary/20" aria-labelledby="location-heading">

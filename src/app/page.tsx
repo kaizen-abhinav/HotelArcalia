@@ -40,12 +40,14 @@ export default function Home() {
   ];
 
   const galleryImages = [
-    { src: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80", alt: "Comfortable hotel room at Arcalia Hotel Changanassery with modern amenities" },
-    { src: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&q=80", alt: "Spacious budget room with clean bedding at Arcalia Hotel Kerala" },
-    { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80", alt: "Well-maintained hotel room interior near KSRTC Changanassery bus stand" },
-    { src: "https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=800&q=80", alt: "Cozy accommodation at best hotel in Changanassery with free parking" },
-    { src: "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=800&q=80", alt: "Clean and affordable hotel room at Arcalia near Changanassery railway station" },
-    { src: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80", alt: "Premium budget stay at Arcalia Hotel Kottayam district" }
+    { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Changanassery exterior view - best budget hotel near KSRTC bus stand Kerala" },
+    { src: "/gallery/gallery-2.jpeg", alt: "Comfortable hotel room at Arcalia Hotel Changanassery with modern amenities and clean bedding" },
+    { src: "/gallery/gallery-3.jpeg", alt: "Spacious budget accommodation at Arcalia Hotel Kerala with parking facility" },
+    { src: "/gallery/gallery-4.jpeg", alt: "Well-maintained hotel interior near KSRTC Changanassery bus stand and railway station" },
+    { src: "/gallery/gallery-5.jpeg", alt: "Cozy room at best hotel in Changanassery with free parking and restaurant" },
+    { src: "/gallery/gallery-6.jpeg", alt: "Clean and affordable hotel room at Arcalia near Changanassery railway station" },
+    { src: "/gallery/gallery-7.jpeg", alt: "Premium budget stay at Arcalia Hotel Kottayam district with 24/7 service" },
+    { src: "/gallery/gallery-8.jpeg", alt: "Arcalia Hotel facilities and amenities - AC hall, restaurant, and parking in Changanassery" }
   ];
 
   const amenities = [
@@ -199,16 +201,27 @@ export default function Home() {
             <h2 id="gallery-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Hotel Rooms & Facilities</h2>
             <p className="text-base sm:text-lg text-muted-foreground font-light">Comfortable budget accommodation near Changanassery bus stand</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
             {galleryImages.map((image, index) => (
-              <div key={index} className="relative h-64 sm:h-72 md:h-80 overflow-hidden rounded-sm group">
+              <div 
+                key={index} 
+                className={`relative overflow-hidden rounded-lg group bg-muted ${
+                  index === 0 || index === 7 ? 'md:col-span-2 h-72 sm:h-80 md:h-96' : 'h-64 sm:h-72 md:h-80'
+                }`}
+              >
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  loading="lazy"
+                  sizes={index === 0 || index === 7 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading={index < 4 ? "eager" : "lazy"}
+                  quality={90}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDBAMBAAAAAAAAAAAAAQIDAAQRBQYSIRMxQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAIDAQAAAAAAAAAAAAAAAAECABEhMf/aAAwDAQACEQMRAD8AzHbG3dPu9DgursySXEgLh1kKgAMQBgfOpv4KKAMHoEfaKKluTJMi0Gf/2Q=="
                 />
+                {/* Subtle overlay on hover */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
               </div>
             ))}
           </div>

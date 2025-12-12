@@ -1,30 +1,34 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hotel-arcalia.vercel.app";
+import { MetadataRoute } from 'next';
 
-export default function sitemap() {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://arcaliahotel.com";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const currentDate = new Date().toISOString();
+  
   return [
     {
-      url: `${siteUrl}/`,
-      lastModified: new Date(),
+      url: siteUrl,
+      lastModified: currentDate,
       changeFrequency: "weekly",
-      priority: 1,
+      priority: 1.0,
     },
     {
       url: `${siteUrl}/restaurant`,
-      lastModified: new Date(),
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/hall`,
+      lastModified: currentDate,
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
-      url: `${siteUrl}/hall`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    {
       url: `${siteUrl}/order`,
-      lastModified: new Date(),
+      lastModified: currentDate,
       changeFrequency: "weekly",
-      priority: 0.7,
+      priority: 0.8,
     },
   ];
 }

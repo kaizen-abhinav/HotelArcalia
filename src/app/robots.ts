@@ -1,11 +1,24 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hotel-arcalia.vercel.app";
+import { MetadataRoute } from 'next';
 
-export default function robots() {
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://arcaliahotel.com";
+
+export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/_next/", "/static/"],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+      },
+      {
+        userAgent: "Googlebot-Image",
+        allow: "/",
+      },
+    ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,
   };

@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { CalendarRange, Car, Phone, Users, Music, Utensils, CheckCircle } from "lucide-react";
+import { CalendarRange, Car, Users, Music, Utensils, CheckCircle, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import BookingForm from "@/components/BookingForm";
 
 const amenities = [
   { icon: Users, title: "Flexible Seating", desc: "30-80 guests capacity" },
@@ -45,27 +46,16 @@ export default function HallPage() {
               A comfortable, air-conditioned hall perfect for family gatherings, small receptions, trainings, and corporate events—steps away from KSRTC with free parking.
             </p>
             <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-3">
-              <Button asChild size="lg" className="w-full sm:w-auto">
-                <a href="tel:04812423027" className="inline-flex items-center justify-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  Call to Reserve
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                <a href="mailto:info@arcaliahotel.com">Email Booking Request</a>
-              </Button>
+              <div className="flex items-center gap-2 text-primary font-medium">
+                <CheckCircle className="w-5 h-5" /> <span>30-80 Pax Capacity</span>
+              </div>
+              <div className="flex items-center gap-2 text-primary font-medium">
+                <CheckCircle className="w-5 h-5" /> <span>Ample Parking</span>
+              </div>
             </div>
           </div>
-          <div className="order-1 lg:order-2 relative h-56 sm:h-64 md:h-[320px] lg:h-[420px] rounded-lg overflow-hidden shadow-lg bg-muted">
-            <Image
-              src="/gallery/gallery-5.jpeg"
-              alt="Arcalia Hotel AC event hall in Changanassery - perfect for meetings and celebrations"
-              fill
-              className="object-cover"
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              priority
-              quality={90}
-            />
+          <div className="order-1 lg:order-2 w-full max-w-md mx-auto lg:ml-auto">
+            <BookingForm />
           </div>
         </div>
       </section>

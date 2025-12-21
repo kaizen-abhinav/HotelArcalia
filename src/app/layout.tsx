@@ -9,7 +9,7 @@ const siteUrl = "https://arcaliahotel.com";
 
 export const metadata: Metadata = {
   title: "Arcalia Hotel Changanassery | Best Budget Stay & Restaurant",
-  description: "Stay at Arcalia Hotel Changanassery near KSRTC bus stand. Budget rooms, Kerala cuisine restaurant, AC hall & free parking. Call 04812423027 to book now!",
+  description: "Stay at Arcalia Hotel Changanassery near KSRTC bus stand. Budget rooms, Kerala cuisine restaurant, AC hall & free parking. Call 0481 2423027 / 9656511777 to book now!",
   keywords: [
     "Arcalia Hotel",
     "hotel in Changanassery",
@@ -95,7 +95,7 @@ export default function RootLayout({
         slogan: "Tasty Food, Safe Stay",
         description: "Arcalia Hotel is the best budget hotel in Changanassery, Kerala, offering comfortable rooms, authentic Kerala cuisine restaurant, AC event hall, and free dedicated parking near KSRTC bus stand.",
         url: "https://arcaliahotel.com",
-        telephone: "+914812423027",
+        telephone: "+914812423027, +919656511777",
         priceRange: "₹₹",
         currenciesAccepted: "INR",
         paymentAccepted: "Cash, UPI, Credit Card, Debit Card",
@@ -227,7 +227,7 @@ export default function RootLayout({
         name: "Arcalia Hall",
         description: "AC event hall for meetings, celebrations, and gatherings in Changanassery with catering services.",
         url: "https://arcaliahotel.com/hall",
-        telephone: "+914812423027",
+        telephone: "+914812423027, +919656511777",
         maximumAttendeeCapacity: 80,
         address: {
           "@type": "PostalAddress",
@@ -384,6 +384,7 @@ export default function RootLayout({
             <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-medium text-foreground">
               <Link href="/restaurant" className="hover:text-primary transition-colors">Restaurant</Link>
               <Link href="/hall" className="hover:text-primary transition-colors">Hall</Link>
+              <Link href="/gallery" className="hover:text-primary transition-colors">Gallery</Link>
               <Link href="/order" className="hover:text-primary transition-colors">Order</Link>
               <a
                 href="http://zoma.to/r/20041234"
@@ -398,6 +399,7 @@ export default function RootLayout({
             <nav className="hidden peer-checked:flex flex-col absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg md:hidden z-50">
               <Link href="/restaurant" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Restaurant</Link>
               <Link href="/hall" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Hall</Link>
+              <Link href="/gallery" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Gallery</Link>
               <Link href="/order" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Order</Link>
               <a
                 href="http://zoma.to/r/20041234"

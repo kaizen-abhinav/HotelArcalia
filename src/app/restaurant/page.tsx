@@ -22,44 +22,124 @@ const specials = [
 ];
 
 const menuItems = [
-  { category: "Kerala Meals", items: [
-    { name: "Veg Meals (Thali)", price: "₹120", desc: "Rice, sambar, rasam, 2 vegetables, papad, pickle" },
-    { name: "Non-Veg Meals", price: "₹200", desc: "Rice, fish curry, chicken fry, kakka irachi, vegetables" },
-    { name: "Fish Meals Special", price: "₹180", desc: "Rice with premium fish curry and sides" },
-  ]},
-  { category: "Biryani", items: [
-    { name: "Chicken Biryani", price: "₹180", desc: "Fragrant basmati rice with tender chicken pieces" },
-    { name: "Mutton Biryani", price: "₹250", desc: "Slow-cooked mutton with aromatic spices" },
-    { name: "Fish Biryani", price: "₹220", desc: "Kerala-style fish biryani with coconut" },
-    { name: "Veg Biryani", price: "₹140", desc: "Mixed vegetables in spiced rice" },
-  ]},
-  { category: "Grills & Tandoor", items: [
-    { name: "Chicken Grill (Full)", price: "₹320", desc: "Whole marinated chicken grilled to perfection" },
-    { name: "Chicken Grill (Half)", price: "₹180", desc: "Half portion of grilled chicken" },
-    { name: "Fish Grill", price: "₹200", desc: "Fresh catch grilled with Kerala spices" },
-    { name: "Chicken Tikka", price: "₹160", desc: "Boneless chicken in tandoor" },
-  ]},
-  { category: "Starters", items: [
-    { name: "Chicken 65", price: "₹150", desc: "Spicy deep-fried chicken" },
-    { name: "Prawns Fry", price: "₹180", desc: "Crispy fried prawns with masala" },
-    { name: "Fish Fry", price: "₹140", desc: "Kerala-style fish fry" },
-    { name: "Beef Fry", price: "₹160", desc: "Spicy Kerala beef fry" },
-  ]},
-  { category: "Parotta Combos", items: [
-    { name: "Parotta + Chicken Curry", price: "₹100", desc: "2 parottas with chicken curry" },
-    { name: "Parotta + Beef Curry", price: "₹110", desc: "2 parottas with beef curry" },
-    { name: "Parotta + Egg Curry", price: "₹70", desc: "2 parottas with egg curry" },
-  ]},
-  { category: "Beverages", items: [
-    { name: "Fresh Lime Soda", price: "₹40", desc: "Sweet or salted" },
-    { name: "Buttermilk", price: "₹30", desc: "Spiced Kerala moru" },
-    { name: "Tea/Coffee", price: "₹20", desc: "Hot beverages" },
-  ]},
+  {
+    category: "Breakfast", items: [
+      { name: "Palappam", price: "₹10", desc: "Traditional rice pancake" },
+      { name: "Chapathi", price: "₹15", desc: "Whole wheat flatbread" },
+      { name: "Porotta", price: "₹15", desc: "Layered flatbread" },
+      { name: "Wheat Porotta", price: "₹18", desc: "Whole wheat layered flatbread" },
+      { name: "Masaladosa", price: "₹70", desc: "Crispy dosa with potato filling" },
+      { name: "Ghee Roast", price: "₹70", desc: "Crispy dosa roast with ghee" },
+      { name: "Idly", price: "₹15", desc: "Steamed rice cake" },
+      { name: "Poori Set", price: "₹70", desc: "Puffy bread with potato curry" },
+    ]
+  },
+  {
+    category: "Vegetarian", items: [
+      { name: "Veg Curry", price: "₹60", desc: "Mixed vegetable curry" },
+      { name: "Gobimanjurian", price: "₹110", desc: "Cauliflower in manchurian sauce" },
+      { name: "Chilly Gobi", price: "₹110", desc: "Spicy cauliflower fry" },
+      { name: "Tomato Fry", price: "₹100", desc: "Tangy tomato preparation" },
+      { name: "Paneer B. Masala", price: "₹140", desc: "Paneer cubes in butter masala gravy" },
+      { name: "Veg Salad", price: "₹150", desc: "Fresh vegetable salad" },
+      { name: "Peanut Masala", price: "₹150", desc: "Spicy peanut mix" },
+    ]
+  },
+  {
+    category: "Non Veg", items: [
+      { name: "Egg Roast", price: "₹40", desc: "Spicy egg roast" },
+      { name: "C. Rost / C. Curry", price: "₹160", desc: "Chicken roast or curry" },
+      { name: "Mutton Chaps", price: "₹210", desc: "Traditional mutton chops" },
+      { name: "Beef Curry / Rost", price: "₹170", desc: "Spicy beef preparation" },
+      { name: "Beef Fry", price: "₹160", desc: "Kerala style beef fry" },
+      { name: "B.D.F", price: "₹190", desc: "Beef Dry Fry" },
+      { name: "Chilly Beef", price: "₹190", desc: "Indo-Chinese style beef" },
+      { name: "Chilly Chicken", price: "₹160", desc: "Spicy chicken stir fry" },
+      { name: "Butter Chicken", price: "₹180", desc: "Creamy chicken curry" },
+      { name: "Garlic Chicken", price: "₹150", desc: "Chicken in garlic sauce" },
+      { name: "Chicken Manjurian", price: "₹160", desc: "Indo-Chinese chicken dish" },
+      { name: "Pepper Chicken", price: "₹170", desc: "Spicy black pepper chicken" },
+      { name: "Chicken Fry", price: "₹160", desc: "Deep fried chicken" },
+      { name: "Chicken 65 (H)", price: "₹320", desc: "Spicy deep fried chicken (Half)" },
+      { name: "Chicken Pepper Fry", price: "₹160", desc: "Chicken fried with pepper" },
+      { name: "Chilly Fish (H)", price: "₹360", desc: "Spicy fish preparation" },
+    ]
+  },
+  {
+    category: "Meals & Biriyani", items: [
+      { name: "Sp. Meals Curry", price: "₹150", desc: "Special meals with curry" },
+      { name: "Meals Curry", price: "₹100", desc: "Standard meals with curry" },
+      { name: "Fish Rost", price: "₹160", desc: "Spicy fish roast" },
+      { name: "Fish Masala", price: "₹160", desc: "Fish in spicy masala gravy" },
+      { name: "Fish Curry", price: "₹100", desc: "Traditional fish curry" },
+      { name: "Fish Fry (as per Size)", price: "", desc: "Fried fresh fish" },
+      { name: "Fish Mappas", price: "₹140", desc: "Fish in coconut milk gravy" },
+      { name: "Meals Biriyani Rice", price: "", desc: "Biryani rice with meals" },
+      { name: "Mutton Biriyani", price: "₹320", desc: "Rich mutton biryani" },
+      { name: "Special Meals", price: "₹200", desc: "Elaborate Kerala feast" },
+      { name: "Chicken Biriyani", price: "₹190", desc: "Classic chicken biryani" },
+      { name: "Veg. Biriyani", price: "₹150", desc: "Vegetable biryani" },
+      { name: "Beef Biriyani", price: "₹220", desc: "Beef biryani Kerala style" },
+      { name: "Fish Biriyani", price: "₹200", desc: "Fish biryani" },
+      { name: "Egg Biriyani", price: "₹130", desc: "Biryani with boiled eggs" },
+    ]
+  },
+  {
+    category: "Chinese/Rice/Noodles", items: [
+      { name: "Egg Fried Rice", price: "₹140", desc: "Fried rice with eggs" },
+      { name: "Chicken Fried Rice", price: "₹160", desc: "Fried rice with chicken" },
+      { name: "Mixed Fried Rice", price: "₹170", desc: "Fried rice with mixed meats" },
+      { name: "Veg.Fried Rice", price: "₹140", desc: "Fried rice with vegetables" },
+      { name: "White Rice", price: "₹120", desc: "Steamed white rice" },
+      { name: "Egg Noodles", price: "₹140", desc: "Noodles stir-fried with egg" },
+      { name: "Veg Noodles", price: "₹150", desc: "Noodles with vegetables" },
+      { name: "Chicken Noodles", price: "₹160", desc: "Noodles with chicken" },
+      { name: "Mixed Noodles", price: "₹170", desc: "Noodles with mixed meats" },
+    ]
+  },
+  {
+    category: "Soups & Soft Drinks", items: [
+      { name: "Sweet Corn Chicken", price: "₹60", desc: "Creamy corn and chicken soup" },
+      { name: "Veg. Soup", price: "₹50", desc: "Mixed vegetable soup" },
+      { name: "Tomato Soup", price: "₹50", desc: "Tangy tomato soup" },
+      { name: "Lime Juice", price: "₹30", desc: "Fresh lime water" },
+      { name: "Mineral Water", price: "₹20", desc: "Packaged drinking water" },
+      { name: "Soda", price: "₹20", desc: "Carbonated soda" },
+      { name: "Soft Drinks", price: "₹40", desc: "Chilled soft drinks" },
+    ]
+  },
 ];
 
+
 export default function RestaurantPage() {
+  // transform menuItems into JSON-LD structure
+  const menuSchema = {
+    "@context": "https://schema.org",
+    "@type": "Menu",
+    "name": "Arcalia Restaurant Menu",
+    "description": "Authentic Kerala cuisine, Biryani, and Chinese dishes",
+    "hasMenuSection": menuItems.map(section => ({
+      "@type": "MenuSection",
+      "name": section.category,
+      "hasMenuItem": section.items.map(item => ({
+        "@type": "MenuItem",
+        "name": item.name,
+        "description": item.desc,
+        "offers": {
+          "@type": "Offer",
+          "price": item.price.replace(/[^0-9]/g, ""),
+          "priceCurrency": "INR"
+        }
+      }))
+    }))
+  };
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(menuSchema) }}
+      />
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-secondary/20 py-12 md:py-20 px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-10 items-center">
@@ -125,7 +205,7 @@ export default function RestaurantPage() {
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-light mb-2">Our Menu</h2>
             <p className="text-muted-foreground text-sm sm:text-base">Authentic Kerala flavors at affordable prices</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {menuItems.map((category) => (
               <Card key={category.category} className="p-4 md:p-6 bg-white">
@@ -144,7 +224,7 @@ export default function RestaurantPage() {
               </Card>
             ))}
           </div>
-          
+
           <p className="text-center text-xs sm:text-sm text-muted-foreground mt-8">
             * Prices are subject to change. For the latest menu and prices, please call us or check Zomato.
           </p>

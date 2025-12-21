@@ -1,23 +1,34 @@
-"use client"
-
 import Image from "next/image";
 import Link from "next/link";
 import { Car, MapPin, Mail, Phone, Clock, Utensils, Users, CheckCircle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ReviewSystem from "@/components/ReviewSystem";
+import LocationSection from "@/components/LocationSection"; // Import the new component
 
-export default function Home() {
-  const handleMapClick = () => {
-    window.open("https://maps.app.goo.gl/9YLm4PGhbAUAgAU26", "_blank");
-  };
+import { placeholderReviews } from "@/lib/data";
+import { getReviews } from "@/app/actions";
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+export default async function Home() {
+  const dbReviews = await getReviews();
+
+  // Merge logic: Real reviews first, then fill remaining spots with placeholders
+  // We want a total of 5 reviews shown
+  const totalSlots = 5;
+
+  // Cast dbReviews to match the shape if needed, or rely on loose matching since schema is similar
+  // Note: DB reviews might have different ID types or fields, ensuring compatibility
+  const normalizedDbReviews = dbReviews.map(r => ({
+    ...r,
+    id: Number(r.id), // Ensure ID is number if needed
+    source: r.source || "Website", // Fallback
+    formattedDate: r.date, // Store original date string
+  }));
+
+  const reviews = [...normalizedDbReviews, ...placeholderReviews]
+    .slice(0, totalSlots);
+
+
 
   const galleryImages = [
     { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Changanassery exterior view - best budget hotel near KSRTC bus stand Kerala" },
@@ -60,7 +71,7 @@ export default function Home() {
     },
     {
       question: "How can I order food from Arcalia Restaurant?",
-      answer: "You can order food online through Zomato for delivery or pickup. Simply visit our Zomato page or call us at 04812423027 to place your order."
+      answer: "You can order food online through Zomato for delivery or pickup. Simply visit our Zomato page or call us at 0481 2423027 to place your order."
     },
     {
       question: "Is Arcalia Hotel near Changanassery bus stand?",
@@ -68,7 +79,7 @@ export default function Home() {
     },
     {
       question: "What are the room rates at Arcalia Hotel?",
-      answer: "Arcalia Hotel offers budget-friendly rooms starting at affordable rates. For current pricing and special offers, please call us at 04812423027 or visit in person."
+      answer: "Arcalia Hotel offers budget-friendly rooms starting at affordable rates. A/C Double Room: ₹2000, Non A/C Double Room: ₹1500. For current pricing and special offers, please call us at 0481 2423027 / 9656511777."
     },
   ];
 
@@ -103,14 +114,14 @@ export default function Home() {
             Arcalia Hotel is the top-rated budget hotel in Changanassery offering comfortable rooms, authentic Kerala cuisine restaurant, AC event hall, and complimentary parking—just 2 minutes from KSRTC bus stand.
           </p>
           <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               asChild
               className="px-7 py-5 text-base sm:text-lg font-light tracking-wider bg-primary hover:bg-primary/90 text-primary-foreground"
             >
               <a href="tel:04812423027" aria-label="Call Arcalia Hotel to book your stay">
                 <Phone className="w-4 h-4 mr-2" />
-                Call 04812423027
+                Call 0481 2423027
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild className="px-7 py-5 text-base sm:text-lg font-light tracking-wider">
@@ -183,11 +194,10 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
             {galleryImages.map((image, index) => (
-              <div 
-                key={index} 
-                className={`relative overflow-hidden rounded-lg group bg-muted ${
-                  index === 0 || index === 7 ? 'md:col-span-2 h-72 sm:h-80 md:h-96' : 'h-64 sm:h-72 md:h-80'
-                }`}
+              <div
+                key={index}
+                className={`relative overflow-hidden rounded-lg group bg-muted ${index === 0 || index === 7 ? 'md:col-span-2 h-72 sm:h-80 md:h-96' : 'h-64 sm:h-72 md:h-80'
+                  }`}
               >
                 <Image
                   src={image.src}
@@ -208,7 +218,49 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Menu Section - H2 with food-related keywords */}
+      {/* Room Tariff Section */}
+      <section id="tariff" className="py-16 md:py-24 px-4 bg-primary/5 border-y border-border" aria-labelledby="tariff-heading">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
+          <h2 id="tariff-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Room Tariff</h2>
+          <p className="text-base sm:text-lg text-muted-foreground font-light mb-10">Affordable luxury in the heart of Changanassery</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <Card className="p-6 border-l-4 border-l-primary shadow-sm hover:shadow-md transition-all text-left">
+              <h3 className="text-xl font-serif font-medium mb-4 text-primary">A/C Rooms</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center border-b border-border/50 pb-2">
+                  <span className="font-light">Double Room</span>
+                  <span className="font-semibold text-lg">₹2000/-</span>
+                </div>
+                <div className="flex justify-between items-center pb-1">
+                  <span className="font-light">Single Room</span>
+                  <span className="font-semibold text-lg">₹1500/-</span>
+                </div>
+              </div>
+            </Card>
+
+            <Card className="p-6 border-l-4 border-l-muted-foreground shadow-sm hover:shadow-md transition-all text-left">
+              <h3 className="text-xl font-serif font-medium mb-4 text-foreground">Non A/C Rooms</h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center border-b border-border/50 pb-2">
+                  <span className="font-light">Double Room</span>
+                  <span className="font-semibold text-lg">₹1500/-</span>
+                </div>
+                <div className="flex justify-between items-center pb-1">
+                  <span className="font-light">Single Room</span>
+                  <span className="font-semibold text-lg">₹800/-</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+          <div className="mt-8 inline-block bg-white px-6 py-3 rounded-full shadow-sm border border-border">
+            <span className="text-muted-foreground font-light">Extra Bed:</span> <span className="font-semibold ml-2">₹250/-</span>
+          </div>
+        </div>
+      </section>
+
+
       <section id="menu" className="py-16 md:py-24 px-4 bg-secondary/30" aria-labelledby="menu-heading">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
@@ -281,81 +333,10 @@ export default function Home() {
       </section>
 
       {/* Reviews Section - Interactive Review System */}
-      <ReviewSystem />
+      <ReviewSystem initialReviewData={reviews} />
 
       {/* Location Section - H2 with local SEO keywords */}
-      <section id="location" className="py-16 md:py-24 px-4 bg-secondary/20" aria-labelledby="location-heading">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-            <h2 id="location-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Hotel Location & Directions</h2>
-            <p className="text-base sm:text-lg text-muted-foreground font-light">Conveniently located near KSRTC Changanassery Bus Stand & Railway Station</p>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-serif font-light mb-6">How to Reach Arcalia Hotel</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-medium text-foreground">From KSRTC Bus Stand</p>
-                    <p className="text-muted-foreground text-sm">2-minute walk via South Exit Road</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-medium text-foreground">From Changanassery Railway Station</p>
-                    <p className="text-muted-foreground text-sm">5-minute drive or 15-minute walk</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-primary mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-medium text-foreground">Landmark</p>
-                    <p className="text-muted-foreground text-sm">Near Janapriya Silks, KSRTC South Exit Road</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Car className="w-5 h-5 text-primary mt-1 flex-shrink-0" aria-hidden="true" />
-                  <div>
-                    <p className="font-medium text-foreground">Free Parking Available</p>
-                    <p className="text-muted-foreground text-sm">Dedicated parking space for guests and diners</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-8">
-                <Button asChild size="lg">
-                  <a href="https://maps.app.goo.gl/9YLm4PGhbAUAgAU26" target="_blank" rel="noreferrer noopener" aria-label="Get directions to Arcalia Hotel on Google Maps">
-                    <MapPin className="w-4 h-4 mr-2" />
-                    Open in Google Maps
-                  </a>
-                </Button>
-              </div>
-            </div>
-            <div 
-              className="relative h-72 sm:h-80 md:h-96 bg-muted cursor-pointer group overflow-hidden rounded-sm"
-              onClick={handleMapClick}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => e.key === 'Enter' && handleMapClick()}
-              aria-label="Click to view Arcalia Hotel location on Google Maps"
-            >
-              {/* Embedded Google Maps iframe for better SEO */}
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3936.7!2d76.540974!3d9.445305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sArcalia%20Hotel!5e0!3m2!1sen!2sin!4v1234567890"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Arcalia Hotel Changanassery Location Map"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <LocationSection />
 
       {/* FAQ Section - Critical for SEO and Featured Snippets */}
       <section id="faq" className="py-16 md:py-24 px-4 bg-white" aria-labelledby="faq-heading">
@@ -393,19 +374,19 @@ export default function Home() {
             Experience the best budget accommodation in Changanassery. Call now to reserve your room, book our hall, or make a restaurant reservation.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="secondary"
               asChild
               className="px-8 py-6 text-lg"
             >
               <a href="tel:04812423027" aria-label="Call Arcalia Hotel">
                 <Phone className="w-5 h-5 mr-2" />
-                Call 04812423027
+                Call 0481 2423027
               </a>
             </Button>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="outline"
               asChild
               className="px-8 py-6 text-lg bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
@@ -438,11 +419,13 @@ export default function Home() {
               <address className="not-italic space-y-4">
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5" aria-hidden="true" />
-                  <a href="tel:04812423027" className="font-light hover:underline">04812423027</a>
+                  <a href="tel:04812423027" className="font-light hover:underline">0481 2423027</a>
+                  <span className="text-muted-foreground">/</span>
+                  <a href="tel:9656511777" className="font-light hover:underline">9656511777</a>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5" aria-hidden="true" />
-                  <a href="mailto:info@arcaliahotel.com" className="font-light hover:underline">info@arcaliahotel.com</a>
+                  <a href="mailto:arcaliachry@gmail.com" className="font-light hover:underline">arcaliachry@gmail.com</a>
                 </div>
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 mt-1 flex-shrink-0" aria-hidden="true" />

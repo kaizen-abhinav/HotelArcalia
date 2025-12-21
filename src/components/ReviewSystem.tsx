@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Star, Send, User, ThumbsUp, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { submitReview, markHelpful } from "@/app/actions";
 
 interface Review {
   id: number;
@@ -15,56 +16,10 @@ interface Review {
   helpful: number;
 }
 
-const initialReviews: Review[] = [
-  {
-    id: 1,
-    name: "Ratish S",
-    rating: 5,
-    comment: "Love the non-veg meals here. The Rs. 200/- meal is a wholesome package with fish curry, chicken fry, kakka irachi and more. Best value for money in Changanassery!",
-    date: "2024-11-15",
-    source: "Google Maps",
-    helpful: 12,
-  },
-  {
-    id: 2,
-    name: "Satheesh SR",
-    rating: 5,
-    comment: "Stayed more than 15 times; best budget friendly rooms with a restaurant and bar close to the bus stand and railway station. Always my first choice when in Changanassery.",
-    date: "2024-10-20",
-    source: "Google Maps",
-    helpful: 8,
-  },
-  {
-    id: 3,
-    name: "Minu Menon",
-    rating: 5,
-    comment: "Nice place, enough seating, good staff and good food. The parking facility is a huge plus. Highly recommended for families!",
-    date: "2024-09-10",
-    source: "Google Maps",
-    helpful: 6,
-  },
-  {
-    id: 4,
-    name: "Arun Kumar",
-    rating: 4,
-    comment: "Good budget hotel near the bus stand. Clean rooms and tasty food. The biryani here is one of the best in town. Will definitely come back.",
-    date: "2024-08-25",
-    source: "Zomato",
-    helpful: 4,
-  },
-  {
-    id: 5,
-    name: "Priya Thomas",
-    rating: 5,
-    comment: "We booked the hall for my daughter's birthday party. The staff was very helpful and the catering was excellent. Great venue for small events!",
-    date: "2024-07-12",
-    source: "Google Maps",
-    helpful: 10,
-  },
-];
 
-export default function ReviewSystem() {
-  const [reviews, setReviews] = useState<Review[]>(initialReviews);
+export default function ReviewSystem({ initialReviewData }: { initialReviewData: Review[] }) {
+  // If initialReviewData is provided, use it. Otherwise empty array (though page.tsx provides data now)
+  const [reviews, setReviews] = useState<Review[]>(initialReviewData);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -75,38 +30,39 @@ export default function ReviewSystem() {
   const [submitted, setSubmitted] = useState(false);
   const [helpfulClicked, setHelpfulClicked] = useState<number[]>([]);
 
-  const averageRating = reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length;
+  const averageRating = reviews.length > 0 ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length : 5;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name.trim() || !formData.comment.trim()) return;
 
     setIsSubmitting(true);
-    
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const newReview: Review = {
-      id: Date.now(),
-      name: formData.name,
-      rating: formData.rating,
-      comment: formData.comment,
-      date: new Date().toISOString().split("T")[0],
-      source: "Website",
-      helpful: 0,
-    };
+    const result = await submitReview(formData);
 
-    setReviews([newReview, ...reviews]);
-    setFormData({ name: "", rating: 5, comment: "" });
+    if (result.success) {
+      const newReview: Review = {
+        id: Date.now(),
+        name: formData.name,
+        rating: formData.rating,
+        comment: formData.comment,
+        date: new Date().toISOString().split("T")[0],
+        source: "Website",
+        helpful: 0,
+      };
+
+      setReviews([newReview, ...reviews].slice(0, 5));
+      setFormData({ name: "", rating: 5, comment: "" });
+      setSubmitted(true);
+      setShowForm(false);
+      setTimeout(() => setSubmitted(false), 3000);
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
     setIsSubmitting(false);
-    setSubmitted(true);
-    setShowForm(false);
-
-    // Reset submitted message after 3 seconds
-    setTimeout(() => setSubmitted(false), 3000);
   };
 
-  const handleHelpful = (id: number) => {
+  const handleHelpful = async (id: number) => {
     if (helpfulClicked.includes(id)) return;
     setHelpfulClicked([...helpfulClicked, id]);
     setReviews(
@@ -114,6 +70,7 @@ export default function ReviewSystem() {
         r.id === id ? { ...r, helpful: r.helpful + 1 } : r
       )
     );
+    await markHelpful(id);
   };
 
   const formatDate = (dateString: string) => {
@@ -139,11 +96,10 @@ export default function ReviewSystem() {
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
-                  className={`w-5 h-5 sm:w-6 sm:h-6 ${
-                    star <= Math.round(averageRating)
-                      ? "fill-primary text-primary"
-                      : "text-muted-foreground"
-                  }`}
+                  className={`w-5 h-5 sm:w-6 sm:h-6 ${star <= Math.round(averageRating)
+                    ? "fill-primary text-primary"
+                    : "text-muted-foreground"
+                    }`}
                 />
               ))}
             </div>
@@ -159,22 +115,63 @@ export default function ReviewSystem() {
           </p>
         </div>
 
-        {/* Write Review Button */}
-        <div className="text-center mb-8">
-          {submitted && (
-            <div className="mb-4 p-3 bg-green-100 text-green-800 rounded-md text-sm">
-              Thank you for your review! It has been submitted successfully.
-            </div>
-          )}
+        {/* Write Review & Google Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
           <Button
             onClick={() => setShowForm(!showForm)}
             variant={showForm ? "outline" : "default"}
-            className="gap-2"
+            className="gap-2 w-full sm:w-auto"
           >
             <MessageCircle className="w-4 h-4" />
             {showForm ? "Cancel" : "Write a Review"}
           </Button>
+
+          <Button
+            asChild
+            variant="outline"
+            className="gap-2 w-full sm:w-auto bg-white hover:bg-gray-50 text-blue-600 border-blue-200 hover:border-blue-300"
+          >
+            <a
+              href="https://maps.app.goo.gl/9YLm4PGhbAUAgAU26"
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label="Write a review on Google Maps"
+            >
+              <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-1772223-1507807.png" alt="Google" className="w-4 h-4" />
+              Review on Google
+            </a>
+          </Button>
         </div>
+
+        {/* Success Message & Copy Workflow */}
+        {submitted && (
+          <Card className="max-w-2xl mx-auto mb-10 p-6 bg-green-50 border-green-200 text-center animate-in fade-in zoom-in duration-300">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <ThumbsUp className="w-6 h-6 text-green-600" />
+            </div>
+            <h3 className="text-xl font-medium text-green-800 mb-2">Thank you for your review!</h3>
+            <p className="text-green-700 mb-6">Your review has been submitted to our website. Would you like to post this on Google too?</p>
+
+            <Button
+              onClick={() => {
+                // Copy to clipboard
+                const reviewText = `${reviews[0].comment}\n\n- ${reviews[0].name}`;
+                navigator.clipboard.writeText(reviews[0].comment).then(() => {
+                  // Open Google Maps
+                  window.open("https://maps.app.goo.gl/9YLm4PGhbAUAgAU26", "_blank");
+                });
+              }}
+              className="bg-white text-blue-600 border border-blue-200 hover:bg-blue-50 gap-2 shadow-sm"
+              variant="outline"
+            >
+              <span className="text-lg">📋</span>
+              Copy Text & Post on Google
+            </Button>
+            <p className="text-xs text-muted-foreground mt-3">
+              Clicking this will copy your review and open Google Maps for you to paste it.
+            </p>
+          </Card>
+        )}
 
         {/* Review Form */}
         {showForm && (
@@ -207,11 +204,10 @@ export default function ReviewSystem() {
                       aria-label={`Rate ${star} stars`}
                     >
                       <Star
-                        className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${
-                          star <= formData.rating
-                            ? "fill-primary text-primary"
-                            : "text-muted-foreground hover:text-primary/50"
-                        }`}
+                        className={`w-7 h-7 sm:w-8 sm:h-8 transition-colors ${star <= formData.rating
+                          ? "fill-primary text-primary"
+                          : "text-muted-foreground hover:text-primary/50"
+                          }`}
                       />
                     </button>
                   ))}
@@ -278,11 +274,10 @@ export default function ReviewSystem() {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-4 h-4 ${
-                      star <= review.rating
-                        ? "fill-primary text-primary"
-                        : "text-muted-foreground"
-                    }`}
+                    className={`w-4 h-4 ${star <= review.rating
+                      ? "fill-primary text-primary"
+                      : "text-muted-foreground"
+                      }`}
                   />
                 ))}
               </div>
@@ -297,11 +292,10 @@ export default function ReviewSystem() {
                 <button
                   onClick={() => handleHelpful(review.id)}
                   disabled={helpfulClicked.includes(review.id)}
-                  className={`flex items-center gap-1.5 text-xs transition-colors ${
-                    helpfulClicked.includes(review.id)
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`flex items-center gap-1.5 text-xs transition-colors ${helpfulClicked.includes(review.id)
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   <ThumbsUp className={`w-3.5 h-3.5 ${helpfulClicked.includes(review.id) ? "fill-primary" : ""}`} />
                   <span>Helpful ({review.helpful})</span>

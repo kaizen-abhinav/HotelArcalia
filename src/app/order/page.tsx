@@ -2,6 +2,11 @@ import { ExternalLink, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
+export const metadata = {
+  title: "Order Online | Arcalia Restaurant Changanassery",
+  description: "Order food online from Arcalia Restaurant Changanassery via Zomato. Authentic Kerala cuisine delivered to your doorstep or available for pickup.",
+};
+
 export default function OrderPage() {
   return (
     <div className="min-h-screen bg-white">

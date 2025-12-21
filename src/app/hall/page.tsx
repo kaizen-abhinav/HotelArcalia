@@ -33,6 +33,11 @@ const eventTypes = [
   "Workshops",
 ];
 
+export const metadata = {
+  title: "AC Hall Booking Changanassery | Arcalia Hotel Event Venue",
+  description: "Book AC hall in Changanassery for birthday parties, meetings, and small events. Capacity 30-80 guests. Catering and parking available at Arcalia Hotel.",
+};
+
 export default function HallPage() {
   return (
     <div className="min-h-screen bg-white">

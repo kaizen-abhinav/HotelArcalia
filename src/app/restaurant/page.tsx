@@ -111,6 +111,11 @@ const menuItems = [
 ];
 
 
+export const metadata = {
+  title: "Arcalia Restaurant Changanassery | Authentic Kerala Cuisine & Biryani",
+  description: "Best restaurant in Changanassery for Kerala meals, biryani, and grilled dishes. Visit Arcalia Restaurant near KSRTC bus stand for tasty food starting at ₹200.",
+};
+
 export default function RestaurantPage() {
   // transform menuItems into JSON-LD structure
   const menuSchema = {

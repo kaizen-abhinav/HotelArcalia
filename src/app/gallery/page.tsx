@@ -12,6 +12,11 @@ const images = [
     { src: "/gallery/gallery-8.jpeg", alt: "Hotel Lobby", span: "" },
 ];
 
+export const metadata = {
+    title: "Gallery | Arcalia Hotel Changanassery Rooms & Facilities",
+    description: "View photos of Arcalia Hotel Changanassery. Explore our clean rooms, restaurant, AC hall, and parking facilities. See why we are the best budget hotel in town.",
+};
+
 export default function GalleryPage() {
     return (
         <div className="min-h-screen bg-white">

@@ -370,8 +370,8 @@ export default function RootLayout({
         <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border">
           <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-3 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-              <div className="text-base sm:text-lg font-semibold tracking-wide whitespace-nowrap">Arcalia Hotel</div>
-              <span className="hidden sm:inline text-xs sm:text-sm text-muted-foreground whitespace-nowrap">Tasty Food, Safe Stay</span>
+              <div className="text-base sm:text-lg font-serif font-semibold tracking-wide whitespace-nowrap">Arcalia Hotel</div>
+              <span className="hidden sm:inline text-xs sm:text-sm text-muted-foreground font-serif italic whitespace-nowrap">Tasty Food, Safe Stay</span>
             </Link>
             {/* Mobile Menu Button */}
             <input type="checkbox" id="mobile-menu" className="peer hidden" />
@@ -381,11 +381,11 @@ export default function RootLayout({
               </svg>
             </label>
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-medium text-foreground">
+            <nav className="hidden md:flex items-center gap-4 lg:gap-6 text-sm font-serif font-medium text-foreground">
+              <Link href="/rooms" className="hover:text-primary transition-colors">Rooms</Link>
               <Link href="/restaurant" className="hover:text-primary transition-colors">Restaurant</Link>
               <Link href="/hall" className="hover:text-primary transition-colors">Hall</Link>
               <Link href="/gallery" className="hover:text-primary transition-colors">Gallery</Link>
-              <Link href="/order" className="hover:text-primary transition-colors">Order</Link>
               <a
                 href="http://zoma.to/r/20041234"
                 target="_blank"
@@ -397,15 +397,15 @@ export default function RootLayout({
             </nav>
             {/* Mobile Navigation */}
             <nav className="hidden peer-checked:flex flex-col absolute top-full left-0 right-0 bg-white border-b border-border shadow-lg md:hidden z-50">
-              <Link href="/restaurant" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Restaurant</Link>
-              <Link href="/hall" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Hall</Link>
-              <Link href="/gallery" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Gallery</Link>
-              <Link href="/order" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50">Order</Link>
+              <Link href="/rooms" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50 font-serif">Rooms</Link>
+              <Link href="/restaurant" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50 font-serif">Restaurant</Link>
+              <Link href="/hall" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50 font-serif">Hall</Link>
+              <Link href="/gallery" className="px-4 py-3 hover:bg-muted transition-colors border-b border-border/50 font-serif">Gallery</Link>
               <a
                 href="http://zoma.to/r/20041234"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="mx-4 my-3 text-center rounded-md bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="mx-4 my-3 text-center rounded-md bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 transition-colors font-serif"
               >
                 Order Food on Zomato
               </a>

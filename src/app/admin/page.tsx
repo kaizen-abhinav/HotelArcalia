@@ -1,10 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Lock, LogOut, Save } from "lucide-react";
+
+// Admin credentials
+const ADMIN_EMAIL = "rajesharcadia13@gmail.com";
+const ADMIN_PASSWORD = "rajesh@arcalia#0";
 
 // Placeholder for now, real implementation would fetch from DB
 const initialTariffs = [
@@ -17,46 +21,54 @@ export default function AdminPage() {
     const [tariffs, setTariffs] = useState(initialTariffs);
     const [loginData, setLoginData] = useState({ email: "", password: "" });
     const [isLoginLoading, setIsLoginLoading] = useState(false);
-    const [isLogin, setIsLogin] = useState(true);
+    const [isLocalAuth, setIsLocalAuth] = useState(false);
+
+    // Check for local authentication on mount
+    useEffect(() => {
+        const localAuth = localStorage.getItem("arcalia_admin_auth");
+        if (localAuth === "true") {
+            setIsLocalAuth(true);
+        }
+    }, []);
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoginLoading(true);
-        if (isLogin) {
-            await authClient.signIn.email({
-                email: loginData.email,
-                password: loginData.password,
-            }, {
-                onSuccess: () => {
-                    window.location.reload();
-                },
-                onError: (ctx) => {
-                    alert(ctx.error.message);
-                    setIsLoginLoading(false);
-                }
-            });
-        } else {
-            await authClient.signUp.email({
-                email: loginData.email,
-                password: loginData.password,
-                name: "Admin User",
-            }, {
-                onSuccess: () => {
-                    window.location.reload();
-                },
-                onError: (ctx) => {
-                    alert(ctx.error.message);
-                    setIsLoginLoading(false);
-                }
-            });
+        
+        // Check for hardcoded admin credentials
+        if (loginData.email === ADMIN_EMAIL && loginData.password === ADMIN_PASSWORD) {
+            localStorage.setItem("arcalia_admin_auth", "true");
+            setIsLocalAuth(true);
+            setIsLoginLoading(false);
+            return;
         }
+        
+        // Try better-auth
+        await authClient.signIn.email({
+            email: loginData.email,
+            password: loginData.password,
+        }, {
+            onSuccess: () => {
+                window.location.reload();
+            },
+            onError: (ctx) => {
+                alert(ctx.error.message);
+                setIsLoginLoading(false);
+            }
+        });
+    };
+
+    const handleSignOut = () => {
+        localStorage.removeItem("arcalia_admin_auth");
+        setIsLocalAuth(false);
+        authClient.signOut();
     };
 
     const handleUpdateTariff = (id: number, newPrice: number) => {
         setTariffs(tariffs.map(t => t.id === id ? { ...t, price: newPrice } : t));
     };
 
-    if (!session.data) {
+    if (!session.data && !isLocalAuth) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
                 <Card className="w-full max-w-md p-8">
@@ -64,7 +76,7 @@ export default function AdminPage() {
                         <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                             <Lock className="w-6 h-6 text-primary" />
                         </div>
-                        <h1 className="text-2xl font-serif font-bold">Admin {isLogin ? "Login" : "Sign Up"}</h1>
+                        <h1 className="text-2xl font-serif font-bold">Admin Login</h1>
                         <p className="text-muted-foreground">Manage Hotel Arcalia</p>
                     </div>
                     <form onSubmit={handleAuth} className="space-y-4">
@@ -89,21 +101,15 @@ export default function AdminPage() {
                             />
                         </div>
                         <Button type="submit" className="w-full" disabled={isLoginLoading}>
-                            {isLoginLoading ? "Processing..." : (isLogin ? "Sign In" : "Create Account")}
+                            {isLoginLoading ? "Processing..." : "Sign In"}
                         </Button>
                     </form>
-                    <div className="mt-4 text-center">
-                        <button
-                            onClick={() => setIsLogin(!isLogin)}
-                            className="text-sm text-primary hover:underline"
-                        >
-                            {isLogin ? "Need an account? Sign Up" : "Already have an account? Sign In"}
-                        </button>
-                    </div>
                 </Card>
             </div>
         );
     }
+
+    const userName = session.data?.user?.name || "Admin";
 
     return (
         <div className="min-h-screen bg-gray-50 p-4 md:p-8">
@@ -111,9 +117,9 @@ export default function AdminPage() {
                 <div className="flex justify-between items-center mb-8">
                     <div>
                         <h1 className="text-3xl font-serif font-medium">Dashboard</h1>
-                        <p className="text-muted-foreground">Welcome back, {session.data.user.name}</p>
+                        <p className="text-muted-foreground">Welcome back, {userName}</p>
                     </div>
-                    <Button variant="outline" onClick={() => authClient.signOut()}>
+                    <Button variant="outline" onClick={handleSignOut}>
                         <LogOut className="w-4 h-4 mr-2" />
                         Sign Out
                     </Button>

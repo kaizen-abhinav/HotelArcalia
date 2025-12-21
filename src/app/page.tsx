@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Car, MapPin, Mail, Phone, Clock, Utensils, Users, CheckCircle, ExternalLink } from "lucide-react";
+import { Car, MapPin, Mail, Phone, Clock, Utensils, Users, CheckCircle, ExternalLink, Bed } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ReviewSystem from "@/components/ReviewSystem";
@@ -34,18 +34,14 @@ export default async function Home() {
     { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Changanassery exterior view - best budget hotel near KSRTC bus stand Kerala" },
     { src: "/gallery/gallery-2.jpeg", alt: "Comfortable hotel room at Arcalia Hotel Changanassery with modern amenities and clean bedding" },
     { src: "/gallery/gallery-3.jpeg", alt: "Spacious budget accommodation at Arcalia Hotel Kerala with parking facility" },
-    { src: "/gallery/gallery-4.jpeg", alt: "Well-maintained hotel interior near KSRTC Changanassery bus stand and railway station" },
-    { src: "/gallery/gallery-5.jpeg", alt: "Cozy room at best hotel in Changanassery with free parking and restaurant" },
-    { src: "/gallery/gallery-6.jpeg", alt: "Clean and affordable hotel room at Arcalia near Changanassery railway station" },
-    { src: "/gallery/gallery-7.jpeg", alt: "Premium budget stay at Arcalia Hotel Kottayam district with 24/7 service" },
-    { src: "/gallery/gallery-8.jpeg", alt: "Arcalia Hotel facilities and amenities - AC hall, restaurant, and parking in Changanassery" }
+    { src: "/gallery/gallery-4.jpeg", alt: "Well-maintained hotel interior near KSRTC Changanassery bus stand and railway station" }
   ];
 
   const amenities = [
     { icon: Car, title: "Free Parking", description: "Dedicated parking space for all guests" },
     { icon: Utensils, title: "Multi-Cuisine Restaurant", description: "Authentic Kerala food & biryani" },
     { icon: Users, title: "AC Event Hall", description: "Capacity for 30-80 guests" },
-    { icon: Clock, title: "24/7 Front Desk", description: "Round-the-clock assistance" },
+    { icon: Bed, title: "AC & Non-AC Rooms", description: "Comfortable stays for every budget" },
   ];
 
   const faqs = [
@@ -101,13 +97,13 @@ export default async function Home() {
             <div className="inline-block w-16 h-0.5 bg-primary mb-8"></div>
           </div>
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif font-light text-foreground mb-6 tracking-wide leading-tight">
-            Best Budget Hotel in Changanassery with Restaurant & Free Parking
+            Where Elegance Meets Comfort
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-primary font-medium mb-4 tracking-wide">
-            Arcalia Hotel — Tasty Food, Safe Stay
+            Arcalia Hotel — A Legacy of Hospitality
           </p>
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-6 font-light tracking-wide">
-            Located Near KSRTC Bus Stand & Railway Station, Kerala
+            Experience Timeless Luxury in the Heart of Changanassery, Kerala
           </p>
           {/* Featured Snippet Optimized Content */}
           <p className="text-sm sm:text-base text-muted-foreground mb-10 md:mb-12 font-light max-w-2xl mx-auto">
@@ -125,15 +121,15 @@ export default async function Home() {
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild className="px-7 py-5 text-base sm:text-lg font-light tracking-wider">
+              <Link href="/rooms" aria-label="View rooms and pricing details">
+                <Bed className="w-4 h-4 mr-2" />
+                View Rooms & Pricing
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" asChild className="px-7 py-5 text-base sm:text-lg font-light tracking-wider">
               <a href="http://zoma.to/r/20041234" target="_blank" rel="noreferrer noopener" aria-label="Order food from Arcalia Restaurant on Zomato">
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Order on Zomato
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" asChild className="px-7 py-5 text-base sm:text-lg font-light tracking-wider">
-              <a href="https://maps.app.goo.gl/9YLm4PGhbAUAgAU26" target="_blank" rel="noreferrer noopener" aria-label="Get directions to Arcalia Hotel on Google Maps">
-                <MapPin className="w-4 h-4 mr-2" />
-                Get Directions
               </a>
             </Button>
           </div>
@@ -192,20 +188,19 @@ export default async function Home() {
             <h2 id="gallery-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Hotel Rooms & Facilities</h2>
             <p className="text-base sm:text-lg text-muted-foreground font-light">Comfortable budget accommodation near Changanassery bus stand</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
             {galleryImages.map((image, index) => (
               <div
                 key={index}
-                className={`relative overflow-hidden rounded-lg group bg-muted ${index === 0 || index === 7 ? 'md:col-span-2 h-72 sm:h-80 md:h-96' : 'h-64 sm:h-72 md:h-80'
-                  }`}
+                className="relative overflow-hidden rounded-lg group bg-muted h-64 sm:h-72 md:h-80"
               >
                 <Image
                   src={image.src}
                   alt={image.alt}
                   fill
-                  sizes={index === 0 || index === 7 ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  loading={index < 4 ? "eager" : "lazy"}
+                  loading={index < 2 ? "eager" : "lazy"}
                   quality={90}
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDBAMBAAAAAAAAAAAAAQIDAAQRBQYSIRMxQVH/xAAVAQEBAAAAAAAAAAAAAAAAAAADBP/EABkRAAIDAQAAAAAAAAAAAAAAAAECABEhMf/aAAwDAQACEQMRAD8AzHbG3dPu9DgursySXEgLh1kKgAMQBgfOpv4KKAMHoEfaKKluTJMi0Gf/2Q=="
@@ -215,47 +210,42 @@ export default async function Home() {
               </div>
             ))}
           </div>
+          <div className="text-center mt-10">
+            <Button asChild size="lg" variant="outline">
+              <Link href="/gallery">View All Photos</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
-      {/* Room Tariff Section */}
-      <section id="tariff" className="py-16 md:py-24 px-4 bg-primary/5 border-y border-border" aria-labelledby="tariff-heading">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
-          <h2 id="tariff-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">Room Tariff</h2>
-          <p className="text-base sm:text-lg text-muted-foreground font-light mb-10">Affordable luxury in the heart of Changanassery</p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            <Card className="p-6 border-l-4 border-l-primary shadow-sm hover:shadow-md transition-all text-left">
-              <h3 className="text-xl font-serif font-medium mb-4 text-primary">A/C Rooms</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b border-border/50 pb-2">
-                  <span className="font-light">Double Room</span>
-                  <span className="font-semibold text-lg">₹2000/-</span>
-                </div>
-                <div className="flex justify-between items-center pb-1">
-                  <span className="font-light">Single Room</span>
-                  <span className="font-semibold text-lg">₹1500/-</span>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-6 border-l-4 border-l-muted-foreground shadow-sm hover:shadow-md transition-all text-left">
-              <h3 className="text-xl font-serif font-medium mb-4 text-foreground">Non A/C Rooms</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center border-b border-border/50 pb-2">
-                  <span className="font-light">Double Room</span>
-                  <span className="font-semibold text-lg">₹1500/-</span>
-                </div>
-                <div className="flex justify-between items-center pb-1">
-                  <span className="font-light">Single Room</span>
-                  <span className="font-semibold text-lg">₹800/-</span>
-                </div>
-              </div>
-            </Card>
-          </div>
-          <div className="mt-8 inline-block bg-white px-6 py-3 rounded-full shadow-sm border border-border">
-            <span className="text-muted-foreground font-light">Extra Bed:</span> <span className="font-semibold ml-2">₹250/-</span>
+      {/* Rooms Promo Section */}
+      <section id="tariff" className="py-16 md:py-24 px-4 bg-primary/5 border-y border-border" aria-labelledby="rooms-heading">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="relative h-72 md:h-96 rounded-lg overflow-hidden">
+              <Image
+                src="/gallery/gallery-2.jpeg"
+                alt="Comfortable rooms at Arcalia Hotel Changanassery"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+            <div className="text-center md:text-left">
+              <div className="inline-block w-16 h-0.5 bg-primary mb-6"></div>
+              <h2 id="rooms-heading" className="text-3xl sm:text-4xl md:text-5xl font-serif font-light text-foreground mb-4">
+                Comfortable Stays
+              </h2>
+              <p className="text-base sm:text-lg text-muted-foreground font-light mb-4">
+                Choose from our AC and Non-AC rooms, designed for your comfort.
+              </p>
+              <p className="text-2xl font-serif text-primary mb-6">
+                Starting from <span className="font-semibold">₹800/-</span> per night
+              </p>
+              <Button asChild size="lg" className="px-8">
+                <Link href="/rooms">View Rooms & Pricing</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

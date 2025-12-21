@@ -2,14 +2,22 @@
 import Image from "next/image";
 
 const images = [
-    { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Exterior View", span: "row-span-2" },
-    { src: "/gallery/gallery-2.jpeg", alt: "Premium AC Room", span: "" },
-    { src: "/gallery/gallery-5.jpeg", alt: "Conference Hall", span: "" },
-    { src: "/gallery/gallery-3.jpeg", alt: "Restaurant Interior", span: "row-span-2" },
-    { src: "/gallery/gallery-4.jpeg", alt: "Bedroom View", span: "" },
-    { src: "/gallery/gallery-6.jpeg", alt: "Event Hall Stage", span: "" },
-    { src: "/gallery/gallery-7.jpeg", alt: "Hall Seating Arrangement", span: "row-span-2" },
-    { src: "/gallery/gallery-8.jpeg", alt: "Hotel Lobby", span: "" },
+    { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Exterior View" },
+    { src: "/gallery/gallery-2.jpeg", alt: "Premium AC Room" },
+    { src: "/gallery/gallery-3.jpeg", alt: "Restaurant Interior" },
+    { src: "/gallery/gallery-4.jpeg", alt: "Bedroom View" },
+    { src: "/gallery/gallery-5.jpeg", alt: "Conference Hall" },
+    { src: "/gallery/gallery-6.jpeg", alt: "Event Hall Stage" },
+    { src: "/gallery/gallery-7.jpeg", alt: "Hall Seating Arrangement" },
+    { src: "/gallery/gallery-8.jpeg", alt: "Hotel Lobby" },
+    { src: "/gallery/gallery-9.jpeg", alt: "Elegant Restaurant Dining Area with Arched Windows" },
+    { src: "/gallery/gallery-10.jpeg", alt: "Spacious Restaurant Seating" },
+    { src: "/gallery/gallery-11.jpeg", alt: "Restaurant Interior with Modern Decor" },
+    { src: "/gallery/gallery-12.jpeg", alt: "Arcalia Hotel Building Exterior" },
+    { src: "/gallery/gallery-13.jpeg", alt: "Hotel Facade with Modern Glass Design" },
+    { src: "/gallery/gallery-14.jpeg", alt: "Restaurant Ambiance View" },
+    { src: "/gallery/gallery-15.jpeg", alt: "Dining Hall Setup" },
+    { src: "/gallery/gallery-16.jpeg", alt: "Additional Hotel View" },
 ];
 
 export const metadata = {
@@ -40,10 +48,12 @@ export default function GalleryPage() {
                                 <Image
                                     src={image.src}
                                     alt={image.alt}
-                                    width={800}
-                                    height={600}
+                                    width={1200}
+                                    height={900}
                                     className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105"
                                     sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                    quality={100}
+                                    unoptimized
                                 />
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                                     <p className="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">

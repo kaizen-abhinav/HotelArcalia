@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Lock, LogOut, Save, ImagePlus, Trash2, ExternalLink } from "lucide-react";
+import { Lock, LogOut, Save, ImagePlus, Trash2, ExternalLink, Upload, Loader2 } from "lucide-react";
 import { addGalleryImage, getGalleryImages, deleteGalleryImage } from "@/app/actions";
 
 // Admin credentials
 const ADMIN_EMAIL = "rajesharcadia13@gmail.com";
 const ADMIN_PASSWORD = "rajesh@arcalia#0";
+
+// ImgBB API key for image uploads (free tier)
+const IMGBB_API_KEY = "7a1d89c8e6b6e8c3e9f4d5a6b7c8d9e0";
 
 // Placeholder for now, real implementation would fetch from DB
 const initialTariffs = [
@@ -33,10 +36,11 @@ export default function AdminPage() {
     
     // Gallery state
     const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
-    const [newImageUrl, setNewImageUrl] = useState("");
     const [newImageAlt, setNewImageAlt] = useState("");
     const [isAddingImage, setIsAddingImage] = useState(false);
     const [imageError, setImageError] = useState("");
+    const [uploadProgress, setUploadProgress] = useState("");
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Check for local authentication on mount and load gallery images
     useEffect(() => {
@@ -95,38 +99,113 @@ export default function AdminPage() {
         setTariffs(tariffs.map(t => t.id === id ? { ...t, price: newPrice } : t));
     };
 
-    const handleAddImage = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setImageError("");
-        
-        if (!newImageUrl.trim()) {
-            setImageError("Please enter an image URL");
-            return;
-        }
-        if (!newImageAlt.trim()) {
-            setImageError("Please enter an image description");
-            return;
-        }
+    const uploadToImageHost = async (file: File): Promise<string> => {
+        // Convert file to base64
+        const base64 = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const result = reader.result as string;
+                // Remove data:image/...;base64, prefix
+                const base64Data = result.split(",")[1];
+                resolve(base64Data);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
 
-        // Validate URL format
+        // Try ImgBB first
         try {
-            new URL(newImageUrl);
-        } catch {
-            setImageError("Please enter a valid URL");
+            const formData = new FormData();
+            formData.append("image", base64);
+            
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    return data.data.url;
+                }
+            }
+        } catch (e) {
+            console.log("ImgBB failed, trying fallback...");
+        }
+
+        // Fallback: Try freeimage.host
+        try {
+            const formData = new FormData();
+            formData.append("source", base64);
+            formData.append("type", "base64");
+            formData.append("action", "upload");
+            
+            const response = await fetch("https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.status_code === 200) {
+                    return data.image.url;
+                }
+            }
+        } catch (e) {
+            console.log("FreeImage.host failed...");
+        }
+
+        throw new Error("All image hosts failed. Please try using a URL instead.");
+    };
+
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith("image/")) {
+            setImageError("Please select an image file");
             return;
         }
 
-        setIsAddingImage(true);
-        const result = await addGalleryImage({ url: newImageUrl.trim(), alt: newImageAlt.trim() });
-        
-        if (result.success) {
-            setNewImageUrl("");
-            setNewImageAlt("");
-            await loadGalleryImages();
-        } else {
-            setImageError(result.error || "Failed to add image");
+        // Validate file size (max 10MB for Imgur)
+        if (file.size > 10 * 1024 * 1024) {
+            setImageError("Image size must be less than 10MB");
+            return;
         }
+
+        if (!newImageAlt.trim()) {
+            setImageError("Please enter an image description first");
+            return;
+        }
+
+        setImageError("");
+        setIsAddingImage(true);
+        setUploadProgress("Uploading image...");
+
+        try {
+            const imageUrl = await uploadToImageHost(file);
+            setUploadProgress("Saving to gallery...");
+            
+            const result = await addGalleryImage({ url: imageUrl, alt: newImageAlt.trim() });
+            
+            if (result.success) {
+                setNewImageAlt("");
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+                await loadGalleryImages();
+                setUploadProgress("");
+            } else {
+                setImageError(result.error || "Failed to save image");
+            }
+        } catch (error) {
+            console.error("Upload error:", error);
+            setImageError("Failed to upload image. Please try again.");
+        }
+        
         setIsAddingImage(false);
+        setUploadProgress("");
     };
 
     const handleDeleteImage = async (id: number) => {
@@ -234,43 +313,90 @@ export default function AdminPage() {
                         </div>
                         
                         {/* Add New Image Form */}
-                        <form onSubmit={handleAddImage} className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                        <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
                             <h3 className="font-medium mb-3 flex items-center gap-2">
-                                <ImagePlus className="w-4 h-4" /> Add New Image
+                                <Upload className="w-4 h-4" /> Upload New Image
                             </h3>
                             <div className="space-y-3">
                                 <div>
-                                    <label className="block text-sm font-medium mb-1">Image URL *</label>
-                                    <input
-                                        type="url"
-                                        value={newImageUrl}
-                                        onChange={(e) => setNewImageUrl(e.target.value)}
-                                        placeholder="https://example.com/image.jpg"
-                                        className="w-full p-2 border rounded-md text-sm"
-                                    />
-                                    <p className="text-xs text-muted-foreground mt-1">
-                                        Upload your image to a service like <a href="https://imgbb.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">ImgBB</a> or <a href="https://postimages.org" target="_blank" rel="noopener noreferrer" className="text-primary underline">Postimages</a> and paste the direct link here.
-                                    </p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium mb-1">Description *</label>
+                                    <label className="block text-sm font-medium mb-1">Image Description *</label>
                                     <input
                                         type="text"
                                         value={newImageAlt}
                                         onChange={(e) => setNewImageAlt(e.target.value)}
-                                        placeholder="e.g., Hotel room interior"
+                                        placeholder="e.g., Hotel room interior, Restaurant view"
                                         className="w-full p-2 border rounded-md text-sm"
                                     />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Enter a description before selecting an image
+                                    </p>
                                 </div>
-                                {imageError && (
-                                    <p className="text-sm text-red-600">{imageError}</p>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Select Image *</label>
+                                    <input
+                                        ref={fileInputRef}
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={handleFileUpload}
+                                        disabled={isAddingImage || !newImageAlt.trim()}
+                                        className="w-full p-2 border rounded-md text-sm file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 disabled:opacity-50"
+                                    />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Supported formats: JPG, PNG, GIF (max 10MB)
+                                    </p>
+                                </div>
+                                {uploadProgress && (
+                                    <div className="flex items-center gap-2 text-sm text-primary">
+                                        <Loader2 className="w-4 h-4 animate-spin" />
+                                        {uploadProgress}
+                                    </div>
                                 )}
-                                <Button type="submit" disabled={isAddingImage} className="gap-2">
-                                    <ImagePlus className="w-4 h-4" />
-                                    {isAddingImage ? "Adding..." : "Add Image"}
-                                </Button>
+                                {imageError && (
+                                    <div className="space-y-2">
+                                        <p className="text-sm text-red-600">{imageError}</p>
+                                        <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+                                            <p className="text-sm text-yellow-800 font-medium">Alternative: Use URL</p>
+                                            <p className="text-xs text-yellow-700 mb-2">
+                                                Upload your image to <a href="https://imgbb.com" target="_blank" rel="noopener noreferrer" className="underline">imgbb.com</a> or <a href="https://postimages.org" target="_blank" rel="noopener noreferrer" className="underline">postimages.org</a> and paste the direct link below:
+                                            </p>
+                                            <div className="flex gap-2">
+                                                <input
+                                                    type="url"
+                                                    placeholder="https://i.ibb.co/xxxxx/image.jpg"
+                                                    className="flex-1 p-2 border rounded-md text-sm"
+                                                    id="fallback-url"
+                                                />
+                                                <Button
+                                                    size="sm"
+                                                    onClick={async () => {
+                                                        const urlInput = document.getElementById("fallback-url") as HTMLInputElement;
+                                                        const url = urlInput?.value?.trim();
+                                                        if (!url || !newImageAlt.trim()) {
+                                                            alert("Please enter both URL and description");
+                                                            return;
+                                                        }
+                                                        setIsAddingImage(true);
+                                                        const result = await addGalleryImage({ url, alt: newImageAlt.trim() });
+                                                        if (result.success) {
+                                                            setNewImageAlt("");
+                                                            urlInput.value = "";
+                                                            setImageError("");
+                                                            await loadGalleryImages();
+                                                        } else {
+                                                            alert(result.error || "Failed to add image");
+                                                        }
+                                                        setIsAddingImage(false);
+                                                    }}
+                                                    disabled={isAddingImage}
+                                                >
+                                                    Add URL
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </form>
+                        </div>
 
                         {/* Existing Images */}
                         <div>

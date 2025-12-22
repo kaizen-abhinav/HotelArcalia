@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { review } from "@/db/schema";
+import { review, galleryImage } from "@/db/schema";
 import { desc, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
@@ -44,5 +44,47 @@ export async function markHelpful(id: number) {
         return { success: true };
     } catch (e) {
         return { success: false };
+    }
+}
+
+export async function addGalleryImage(data: { url: string; alt: string }) {
+    if (!data.url || !data.alt) {
+        return { success: false, error: "Missing fields" };
+    }
+
+    try {
+        await db.insert(galleryImage).values({
+            url: data.url,
+            alt: data.alt,
+            createdAt: new Date(),
+        });
+
+        revalidatePath("/gallery");
+        revalidatePath("/");
+        return { success: true };
+    } catch (e) {
+        console.error("Gallery image error:", e);
+        return { success: false, error: "Database error" };
+    }
+}
+
+export async function getGalleryImages() {
+    try {
+        return await db.select().from(galleryImage).orderBy(desc(galleryImage.createdAt));
+    } catch (e) {
+        console.error("Get gallery images error:", e);
+        return [];
+    }
+}
+
+export async function deleteGalleryImage(id: number) {
+    try {
+        await db.delete(galleryImage).where(eq(galleryImage.id, id));
+        revalidatePath("/gallery");
+        revalidatePath("/");
+        return { success: true };
+    } catch (e) {
+        console.error("Delete gallery image error:", e);
+        return { success: false, error: "Database error" };
     }
 }

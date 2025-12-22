@@ -440,9 +440,14 @@ export default async function Home() {
                 <p className="font-light opacity-80">© 2025 Arcalia Hotel, Changanassery. All rights reserved.</p>
                 <p className="text-sm opacity-70 mt-1">Best Budget Hotel in Changanassery, Kerala | Near KSRTC Bus Stand</p>
               </div>
-              <p className="text-sm opacity-80">
-                Site crafted by <a href="https://www.noxusdynamics.tech/" target="_blank" rel="noreferrer noopener" className="underline font-medium hover:opacity-100">Noxus Dynamics</a>
-              </p>
+              <div className="text-center md:text-right">
+                <p className="text-sm opacity-80">
+                  Developed by <a href="https://noxusdynamics.tech" target="_blank" rel="noreferrer noopener" className="underline font-medium hover:opacity-100">Noxus Dynamics</a>
+                </p>
+                <p className="text-xs opacity-70 mt-1">
+                  <a href="tel:8590173610" className="hover:underline">📞 8590173610</a>
+                </p>
+              </div>
             </div>
           </div>
         </div>

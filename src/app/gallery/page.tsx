@@ -1,7 +1,8 @@
 
 import Image from "next/image";
+import { getGalleryImages } from "@/app/actions";
 
-const images = [
+const staticImages = [
     { src: "/gallery/gallery-1.jpeg", alt: "Arcalia Hotel Exterior View" },
     { src: "/gallery/gallery-2.jpeg", alt: "Premium AC Room" },
     { src: "/gallery/gallery-3.jpeg", alt: "Restaurant Interior" },
@@ -25,7 +26,22 @@ export const metadata = {
     description: "View photos of Arcalia Hotel Changanassery. Explore our clean rooms, restaurant, AC hall, and parking facilities. See why we are the best budget hotel in town.",
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+    // Fetch dynamic images from database
+    const dbImages = await getGalleryImages();
+    
+    // Combine dynamic images (shown first) with static images
+    const dynamicImages = dbImages.map(img => ({
+        src: img.url,
+        alt: img.alt,
+        isDynamic: true,
+    }));
+    
+    const allImages = [
+        ...dynamicImages,
+        ...staticImages.map(img => ({ ...img, isDynamic: false })),
+    ];
+
     return (
         <div className="min-h-screen bg-white">
             {/* Header */}
@@ -43,18 +59,29 @@ export default function GalleryPage() {
             <section className="py-12 md:py-16 px-4">
                 <div className="max-w-7xl mx-auto">
                     <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-                        {images.map((image, i) => (
+                        {allImages.map((image, i) => (
                             <div key={i} className={`relative break-inside-avoid rounded-lg overflow-hidden group shadow-sm hover:shadow-md transition-shadow`}>
-                                <Image
-                                    src={image.src}
-                                    alt={image.alt}
-                                    width={1200}
-                                    height={900}
-                                    className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105"
-                                    sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                                    quality={100}
-                                    unoptimized
-                                />
+                                {image.isDynamic ? (
+                                    // External URL images use img tag
+                                    <img
+                                        src={image.src}
+                                        alt={image.alt}
+                                        className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105"
+                                        loading="lazy"
+                                    />
+                                ) : (
+                                    // Local images use Next.js Image component
+                                    <Image
+                                        src={image.src}
+                                        alt={image.alt}
+                                        width={1200}
+                                        height={900}
+                                        className="w-full h-auto object-cover transform transition-transform duration-500 group-hover:scale-105"
+                                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                                        quality={100}
+                                        unoptimized
+                                    />
+                                )}
                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                                     <p className="text-white font-medium transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                                         {image.alt}

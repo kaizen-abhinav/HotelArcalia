@@ -65,3 +65,10 @@ export const review = sqliteTable("review", {
     helpful: integer("helpful").default(0).notNull(),
     isApproved: integer("is_approved", { mode: "boolean" }).default(false),
 });
+
+export const galleryImage = sqliteTable("gallery_image", {
+    id: integer("id").primaryKey({ autoIncrement: true }),
+    url: text("url").notNull(),
+    alt: text("alt").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
+});

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import { authClient } from "@/lib/auth-client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Lock, LogOut, Save } from "lucide-react";
+import { Lock, LogOut, Save, ImagePlus, Trash2, ExternalLink } from "lucide-react";
+import { addGalleryImage, getGalleryImages, deleteGalleryImage } from "@/app/actions";
 
 // Admin credentials
 const ADMIN_EMAIL = "rajesharcadia13@gmail.com";
@@ -16,20 +17,46 @@ const initialTariffs = [
     { id: 2, type: "Non-AC Double Room", price: 1500 },
 ];
 
+interface GalleryImage {
+    id: number;
+    url: string;
+    alt: string;
+    createdAt: Date;
+}
+
 export default function AdminPage() {
     const session = authClient.useSession();
     const [tariffs, setTariffs] = useState(initialTariffs);
     const [loginData, setLoginData] = useState({ email: "", password: "" });
     const [isLoginLoading, setIsLoginLoading] = useState(false);
     const [isLocalAuth, setIsLocalAuth] = useState(false);
+    
+    // Gallery state
+    const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([]);
+    const [newImageUrl, setNewImageUrl] = useState("");
+    const [newImageAlt, setNewImageAlt] = useState("");
+    const [isAddingImage, setIsAddingImage] = useState(false);
+    const [imageError, setImageError] = useState("");
 
-    // Check for local authentication on mount
+    // Check for local authentication on mount and load gallery images
     useEffect(() => {
         const localAuth = localStorage.getItem("arcalia_admin_auth");
         if (localAuth === "true") {
             setIsLocalAuth(true);
         }
     }, []);
+
+    // Load gallery images when authenticated
+    useEffect(() => {
+        if (session.data || isLocalAuth) {
+            loadGalleryImages();
+        }
+    }, [session.data, isLocalAuth]);
+
+    const loadGalleryImages = async () => {
+        const images = await getGalleryImages();
+        setGalleryImages(images as GalleryImage[]);
+    };
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -66,6 +93,51 @@ export default function AdminPage() {
 
     const handleUpdateTariff = (id: number, newPrice: number) => {
         setTariffs(tariffs.map(t => t.id === id ? { ...t, price: newPrice } : t));
+    };
+
+    const handleAddImage = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setImageError("");
+        
+        if (!newImageUrl.trim()) {
+            setImageError("Please enter an image URL");
+            return;
+        }
+        if (!newImageAlt.trim()) {
+            setImageError("Please enter an image description");
+            return;
+        }
+
+        // Validate URL format
+        try {
+            new URL(newImageUrl);
+        } catch {
+            setImageError("Please enter a valid URL");
+            return;
+        }
+
+        setIsAddingImage(true);
+        const result = await addGalleryImage({ url: newImageUrl.trim(), alt: newImageAlt.trim() });
+        
+        if (result.success) {
+            setNewImageUrl("");
+            setNewImageAlt("");
+            await loadGalleryImages();
+        } else {
+            setImageError(result.error || "Failed to add image");
+        }
+        setIsAddingImage(false);
+    };
+
+    const handleDeleteImage = async (id: number) => {
+        if (!confirm("Are you sure you want to delete this image?")) return;
+        
+        const result = await deleteGalleryImage(id);
+        if (result.success) {
+            await loadGalleryImages();
+        } else {
+            alert("Failed to delete image");
+        }
     };
 
     if (!session.data && !isLocalAuth) {
@@ -152,10 +224,87 @@ export default function AdminPage() {
                         </div>
                     </Card>
 
-                    {/* Review Management (Placeholder) */}
-                    <Card className="p-6 opacity-60">
-                        <h2 className="text-xl font-medium mb-4">Reviews (Coming Soon)</h2>
-                        <p className="text-muted-foreground">Review moderation will be enabled in the next update.</p>
+                    {/* Gallery Image Management */}
+                    <Card className="p-6">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-medium">Gallery Images</h2>
+                            <a href="/gallery" target="_blank" className="text-sm text-primary hover:underline flex items-center gap-1">
+                                View Gallery <ExternalLink className="w-3 h-3" />
+                            </a>
+                        </div>
+                        
+                        {/* Add New Image Form */}
+                        <form onSubmit={handleAddImage} className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                            <h3 className="font-medium mb-3 flex items-center gap-2">
+                                <ImagePlus className="w-4 h-4" /> Add New Image
+                            </h3>
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Image URL *</label>
+                                    <input
+                                        type="url"
+                                        value={newImageUrl}
+                                        onChange={(e) => setNewImageUrl(e.target.value)}
+                                        placeholder="https://example.com/image.jpg"
+                                        className="w-full p-2 border rounded-md text-sm"
+                                    />
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Upload your image to a service like <a href="https://imgbb.com" target="_blank" rel="noopener noreferrer" className="text-primary underline">ImgBB</a> or <a href="https://postimages.org" target="_blank" rel="noopener noreferrer" className="text-primary underline">Postimages</a> and paste the direct link here.
+                                    </p>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">Description *</label>
+                                    <input
+                                        type="text"
+                                        value={newImageAlt}
+                                        onChange={(e) => setNewImageAlt(e.target.value)}
+                                        placeholder="e.g., Hotel room interior"
+                                        className="w-full p-2 border rounded-md text-sm"
+                                    />
+                                </div>
+                                {imageError && (
+                                    <p className="text-sm text-red-600">{imageError}</p>
+                                )}
+                                <Button type="submit" disabled={isAddingImage} className="gap-2">
+                                    <ImagePlus className="w-4 h-4" />
+                                    {isAddingImage ? "Adding..." : "Add Image"}
+                                </Button>
+                            </div>
+                        </form>
+
+                        {/* Existing Images */}
+                        <div>
+                            <h3 className="font-medium mb-3">Uploaded Images ({galleryImages.length})</h3>
+                            {galleryImages.length === 0 ? (
+                                <p className="text-muted-foreground text-sm">No images uploaded yet. Add your first image above.</p>
+                            ) : (
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    {galleryImages.map((image) => (
+                                        <div key={image.id} className="relative group">
+                                            <img
+                                                src={image.url}
+                                                alt={image.alt}
+                                                className="w-full h-32 object-cover rounded-lg border"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23f0f0f0' width='100' height='100'/%3E%3Ctext fill='%23999' x='50%25' y='50%25' text-anchor='middle' dy='.3em'%3EError%3C/text%3E%3C/svg%3E";
+                                                }}
+                                            />
+                                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                                <Button
+                                                    size="sm"
+                                                    variant="destructive"
+                                                    onClick={() => handleDeleteImage(image.id)}
+                                                    className="gap-1"
+                                                >
+                                                    <Trash2 className="w-3 h-3" /> Delete
+                                                </Button>
+                                            </div>
+                                            <p className="text-xs text-muted-foreground mt-1 truncate">{image.alt}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     </Card>
                 </div>
             </div>
